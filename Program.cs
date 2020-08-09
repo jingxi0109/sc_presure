@@ -7,7 +7,11 @@ namespace sc_presure
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-        }
+ 
+ IPMI_Access.Foreloop();     
+ 
+ //IPMI_Access.Foreloop();
+ }
           static string Ex()
     {
 

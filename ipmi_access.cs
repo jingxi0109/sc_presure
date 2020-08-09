@@ -207,9 +207,9 @@ namespace sc_presure
          
         // }
 
-        private static void Foreloop()
+        public static void Foreloop()
         {
-            IPMI_Access access = new IPMI_Access("192.168.7.219");
+            IPMI_Access access = new IPMI_Access("192.168.7.191");
             var v = access.Get_last_ilist();
             foreach (var i in v)
             {
