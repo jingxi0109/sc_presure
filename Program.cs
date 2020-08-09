@@ -7,7 +7,7 @@ namespace sc_presure
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
- 
+  
  IPMI_Access.Foreloop();    
  //IPMI_Access.Foreloop();
  }
@@ -34,13 +34,5 @@ return result;
 
 
     }
-    }
-     public class ipmi_info
-    {
-        public string i_index { get; set; }
-        public string i_Name { get; set; }
-        public string  Raw_value { get; set; }
-        public string  Value { get; set; }
-        public string  Unit { get; set; }
     }
 }
