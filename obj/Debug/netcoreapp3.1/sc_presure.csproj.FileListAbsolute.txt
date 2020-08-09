@@ -1,0 +1,15 @@
+/home/jingxi/Code/pre_sure/sc_presure/obj/Debug/netcoreapp3.1/sc_presure.csprojAssemblyReference.cache
+/home/jingxi/Code/pre_sure/sc_presure/obj/Debug/netcoreapp3.1/sc_presure.AssemblyInfoInputs.cache
+/home/jingxi/Code/pre_sure/sc_presure/obj/Debug/netcoreapp3.1/sc_presure.AssemblyInfo.cs
+/home/jingxi/Code/pre_sure/sc_presure/obj/Debug/netcoreapp3.1/sc_presure.csproj.CoreCompileInputs.cache
+/home/jingxi/Code/pre_sure/sc_presure/bin/Debug/netcoreapp3.1/sc_presure
+/home/jingxi/Code/pre_sure/sc_presure/bin/Debug/netcoreapp3.1/sc_presure.deps.json
+/home/jingxi/Code/pre_sure/sc_presure/bin/Debug/netcoreapp3.1/sc_presure.runtimeconfig.json
+/home/jingxi/Code/pre_sure/sc_presure/bin/Debug/netcoreapp3.1/sc_presure.runtimeconfig.dev.json
+/home/jingxi/Code/pre_sure/sc_presure/bin/Debug/netcoreapp3.1/sc_presure.dll
+/home/jingxi/Code/pre_sure/sc_presure/bin/Debug/netcoreapp3.1/sc_presure.pdb
+/home/jingxi/Code/pre_sure/sc_presure/bin/Debug/netcoreapp3.1/RestSharp.dll
+/home/jingxi/Code/pre_sure/sc_presure/obj/Debug/netcoreapp3.1/sc_presure.csproj.CopyComplete
+/home/jingxi/Code/pre_sure/sc_presure/obj/Debug/netcoreapp3.1/sc_presure.dll
+/home/jingxi/Code/pre_sure/sc_presure/obj/Debug/netcoreapp3.1/sc_presure.pdb
+/home/jingxi/Code/pre_sure/sc_presure/obj/Debug/netcoreapp3.1/sc_presure.genruntimeconfig.cache
