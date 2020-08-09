@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace sc_presure
 {
@@ -8,8 +8,7 @@ namespace sc_presure
         {
             Console.WriteLine("Hello World!");
  
- IPMI_Access.Foreloop();     
- 
+ IPMI_Access.Foreloop();    
  //IPMI_Access.Foreloop();
  }
           static string Ex()
