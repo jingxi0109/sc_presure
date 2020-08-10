@@ -1,57 +1,58 @@
 ﻿using System;
+using System.Threading;
 
 namespace sc_presure {
     class Program {
         static void Main (string[] args) {
             Console.WriteLine ("Hello World!");
-            //IPMI_Access.Foreloop();    
+            //IPMI_Access.Foreloop();
             //  Console.WriteLine (LSEX ());
             //IPMI_Access.Foreloop();
-            for (int i = 0; i < 20; i++)
-            {
-                 Console.WriteLine (common_cmd (" ls"));     
-                 Console.WriteLine (common_cmd (" ifconfig"));     
+            for (int i = 0; i < 5; i++) {
+                Console.WriteLine (common_cmd (" ls"));
+                Thread.Sleep (2000);
+                Console.WriteLine (common_cmd (" ifconfig"));
             }
-           
-               }
-        static string Ex () {
-
-            string command = "ifconfig"; //"write your command here";
-            string result = "";
-            using (System.Diagnostics.Process proc = new System.Diagnostics.Process ()) {
-                proc.StartInfo.FileName = "/bin/bash";
-                proc.StartInfo.Arguments = "-c \" " + command + @" -a | grep -i  'inet ' ";
-                proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.RedirectStandardError = true;
-                proc.Start ();
-
-                result += proc.StandardOutput.ReadToEnd ();
-                result += proc.StandardError.ReadToEnd ();
-
-                proc.WaitForExit ();
-            }
-            return result;
         }
-        static string LSEX () {
+        // static string Ex ()
+        //  {
 
-            string command = "ls"; //"write your command here";
-            string result = "";
-            using (System.Diagnostics.Process proc = new System.Diagnostics.Process ()) {
-                proc.StartInfo.FileName = "/bin/bash";
-                proc.StartInfo.Arguments = "-c " + command; //"-c  " + command;// + @" -a | grep -i  'inet ' ";
-                proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.RedirectStandardError = true;
-                proc.Start ();
+        //     string command = "ifconfig"; //"write your command here";
+        //     string result = "";
+        //     using (System.Diagnostics.Process proc = new System.Diagnostics.Process ()) {
+        //         proc.StartInfo.FileName = "/bin/bash";
+        //         proc.StartInfo.Arguments = "-c \" " + command + @" -a | grep -i  'inet ' ";
+        //         proc.StartInfo.UseShellExecute = false;
+        //         proc.StartInfo.RedirectStandardOutput = true;
+        //         proc.StartInfo.RedirectStandardError = true;
+        //         proc.Start ();
 
-                result += proc.StandardOutput.ReadToEnd ();
-                result += proc.StandardError.ReadToEnd ();
+        //         result += proc.StandardOutput.ReadToEnd ();
+        //         result += proc.StandardError.ReadToEnd ();
 
-                proc.WaitForExit ();
-            }
-            return result;
-        }
+        //         proc.WaitForExit ();
+        //     }
+        //     return result;
+        // }
+        // static string LSEX () {
+
+        //     string command = "ls"; //"write your command here";
+        //     string result = "";
+        //     using (System.Diagnostics.Process proc = new System.Diagnostics.Process ()) {
+        //         proc.StartInfo.FileName = "/bin/bash";
+        //         proc.StartInfo.Arguments = "-c " + command; //"-c  " + command;// + @" -a | grep -i  'inet ' ";
+        //         proc.StartInfo.UseShellExecute = false;
+        //         proc.StartInfo.RedirectStandardOutput = true;
+        //         proc.StartInfo.RedirectStandardError = true;
+        //         proc.Start ();
+
+        //         result += proc.StandardOutput.ReadToEnd ();
+        //         result += proc.StandardError.ReadToEnd ();
+
+        //         proc.WaitForExit ();
+        //     }
+        //     return result;
+        // }
         static string common_cmd (string cmd) {
 
             string command = cmd; //"write your command here";
@@ -60,7 +61,6 @@ namespace sc_presure {
                 proc.StartInfo.FileName = "/bin/bash";
                 proc.StartInfo.Arguments = "-c " + command; //"-c  " + command;// + @" -a | grep -i  'inet ' ";
                 proc.StartInfo.UseShellExecute = false;
-                
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.RedirectStandardError = true;
                 proc.Start ();
