@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/jingxi/Code/pre_sure/sc_presure/sc_presure.csproj": {}
+    "/home/jingxi/Code/GitHub/sc_presure/sc_presure.csproj": {}
   },
   "projects": {
-    "/home/jingxi/Code/pre_sure/sc_presure/sc_presure.csproj": {
+    "/home/jingxi/Code/GitHub/sc_presure/sc_presure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jingxi/Code/pre_sure/sc_presure/sc_presure.csproj",
+        "projectUniqueName": "/home/jingxi/Code/GitHub/sc_presure/sc_presure.csproj",
         "projectName": "sc_presure",
-        "projectPath": "/home/jingxi/Code/pre_sure/sc_presure/sc_presure.csproj",
+        "projectPath": "/home/jingxi/Code/GitHub/sc_presure/sc_presure.csproj",
         "packagesPath": "/home/jingxi/.nuget/packages/",
-        "outputPath": "/home/jingxi/Code/pre_sure/sc_presure/obj/",
+        "outputPath": "/home/jingxi/Code/GitHub/sc_presure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/jingxi/.nuget/NuGet/NuGet.Config"

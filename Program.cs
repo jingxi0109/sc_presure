@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Threading;
 
-namespace sc_presure {
+namespace sc_presure 
+{
     class Program {
         static void Main (string[] args) {
             Console.WriteLine ("Hello World!");
