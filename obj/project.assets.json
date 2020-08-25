@@ -6212,11 +6212,11 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "RestSharp >= 106.11.4",
-      "mongodbclient >= *"
+      "mongodbclient >= 1.0.22"
     ]
   },
   "packageFolders": {
-    "/home/jingxi/.nuget/packages/": {}
+    "/root/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
@@ -6224,11 +6224,11 @@
       "projectUniqueName": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
       "projectName": "sc_presure",
       "projectPath": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
-      "packagesPath": "/home/jingxi/.nuget/packages/",
+      "packagesPath": "/root/.nuget/packages/",
       "outputPath": "/home/jingxi/Code/sc_presure/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/jingxi/.nuget/NuGet/NuGet.Config"
+        "/root/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -6256,7 +6256,7 @@
           },
           "mongodbclient": {
             "target": "Package",
-            "version": "[*, )"
+            "version": "[1.0.22, )"
           }
         },
         "imports": [

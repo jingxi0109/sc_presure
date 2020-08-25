@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MongoDB;
+using MongoDB.Bson;
 
 namespace sc_presure
 {
@@ -279,9 +281,14 @@ namespace sc_presure
   {
 Console.WriteLine("==============================");
 
-
-foreach(var s in info.Memory)
+var doc =new BsonDocument();
+foreach(var s in info.Memory.Take(9)){
 Console.WriteLine(s);
+
+
+}
+
+
 
 
      
