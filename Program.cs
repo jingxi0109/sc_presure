@@ -277,24 +277,20 @@ namespace sc_presure {
       static void GGExe (GG_info info) {
          Console.WriteLine ("==============================");
 
-         var doc = new BsonDocument () {
-
-         };
+       
          var glist = new List<G_info> ();
 
-while (info.Memory.Count>0)
-{
-    G_info g_ = new G_info (info.Memory.TakeLast (8).ToList (), info.Memory.Take (1).SingleOrDefault ());
+         while (info.Memory.Count > 0) {
+            G_info g_ = new G_info (info.Memory.TakeLast (8).ToList (), info.Memory.Take (1).SingleOrDefault ());
 
-         glist.Add (g_);
+            glist.Add (g_);
 
-         info.Memory.RemoveRange(0,9);
-    
-}
-        
+            info.Memory.RemoveRange (0, 9);
+
+         }
 
          foreach (var i in glist) {
-Console.WriteLine(i.Title);
+            Console.WriteLine (i.Title);
             foreach (var s in i.info) {
                Console.WriteLine (s);
                // if (!s.StartsWith(" "))
@@ -309,7 +305,7 @@ Console.WriteLine(i.Title);
             }
          }
          Console.WriteLine ("==============================");
-         Console.WriteLine(glist.ToJson());
+         Console.WriteLine (glist.ToJson ());
 
       }
 
@@ -350,7 +346,7 @@ Console.WriteLine(i.Title);
          foreach (var item in str) {
 
             var s = item.Split (":", StringSplitOptions.RemoveEmptyEntries);
-            Console.WriteLine (s[0] + "--" + s[1]);
+           // Console.WriteLine (s[0] + "--" + s[1]);
             this.info.Add (s[0].Trim (), s[1].Trim ());
 
          }
