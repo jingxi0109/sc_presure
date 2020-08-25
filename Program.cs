@@ -1,19 +1,18 @@
-using System.Diagnostics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MongoDB;
 using MongoDB.Bson;
 
-namespace sc_presure
-{
-    class Program {
+namespace sc_presure {
+   class Program {
       static void Main (string[] args) {
-        GGExe(Te ());
+         GGExe (Te ());
 
       }
       static GG_info Te () {
-         GG_info GGG=new GG_info();
+         GG_info GGG = new GG_info ();
          //    Console.WriteLine ("Hello World!");
          //IPMI_Access.Foreloop();
          //  Console.WriteLine (LSEX ());
@@ -75,19 +74,19 @@ namespace sc_presure
          var llist1 = res6.Take (8).TakeLast (4);
          foreach (var re in llist1) {
             Console.WriteLine (re);
-            GGG.BIOS.Add(re);
+            GGG.BIOS.Add (re);
          }
          Console.WriteLine ("--System--------------");
          var llist2 = res7.Take (9).TakeLast (5);
          foreach (var re in llist2) {
             Console.WriteLine (re);
-            GGG.Sysinfo.Add(re);
+            GGG.Sysinfo.Add (re);
          }
          Console.WriteLine ("--BaseBoard--------------");
          var llist3 = res8.Take (9).TakeLast (5);
          foreach (var re in llist3) {
             Console.WriteLine (re);
-            GGG.BaseBoard.Add(re);
+            GGG.BaseBoard.Add (re);
          }
          Console.WriteLine ("--Processor--------------");
          var llist4 = res9.Where (z =>
@@ -101,7 +100,7 @@ namespace sc_presure
          );
          foreach (var re in llist4) {
             Console.WriteLine (re);
-            GGG.Processor.Add(re);
+            GGG.Processor.Add (re);
          }
          Console.WriteLine ("--Memory--------------");
          var llist5 = res10.Where (z =>
@@ -116,7 +115,7 @@ namespace sc_presure
          );
          foreach (var re in llist5) {
             Console.WriteLine (re);
-            GGG.Memory.Add(re);
+            GGG.Memory.Add (re);
          }
          Console.WriteLine ("--Slot--------------");
          var llist6 = res11.Where (z =>
@@ -133,7 +132,7 @@ namespace sc_presure
          );
          foreach (var re in llist6) {
             Console.WriteLine (re);
-            GGG.PCISlot.Add(re);
+            GGG.PCISlot.Add (re);
          }
          Console.WriteLine ("--Power--------------");
          var llist7 = res12.Where (z =>
@@ -150,7 +149,7 @@ namespace sc_presure
          );
          foreach (var re in llist7) {
             Console.WriteLine (re);
-            GGG.PowerSuply.Add(re);
+            GGG.PowerSuply.Add (re);
          }
          Console.WriteLine ("--EthNet--------------");
          var llist8 = res13.Where (z =>
@@ -167,7 +166,7 @@ namespace sc_presure
          );
          foreach (var re in llist8) {
             Console.WriteLine (re);
-            GGG.Ethernets.Add(re);
+            GGG.Ethernets.Add (re);
          }
          Console.WriteLine ("--------MELL--------");
          var llist9 = res13.Where (z =>
@@ -216,7 +215,7 @@ namespace sc_presure
          );
          foreach (var re in llist11) {
             Console.WriteLine (re.Split (": ") [0]);
-            GGG.Lo.Add(re.Split (": ") [0]);
+            GGG.Lo.Add (re.Split (": ") [0]);
          }
          Console.WriteLine ("------IP----------");
          var llist12 = res14.Where (z =>
@@ -238,7 +237,7 @@ namespace sc_presure
             var str = res14[index + 1];
             var res = str.Split (' ', StringSplitOptions.RemoveEmptyEntries);
             Console.WriteLine (res[1]);
-            GGG.IP.Add(res[1]);
+            GGG.IP.Add (res[1]);
 
          }
 
@@ -249,7 +248,7 @@ namespace sc_presure
          slist1.AddRange (slist4);
          foreach (var item in slist1) {
             Console.WriteLine (item[0] + ":" + item[1]);
-            GGG.Others.Add(item[0] + ":" + item[1]);
+            GGG.Others.Add (item[0] + ":" + item[1]);
          }
          return GGG;
       }
@@ -275,33 +274,49 @@ namespace sc_presure
          return result;
       }
 
-  
-  
-  static void GGExe(GG_info info)
-  {
-Console.WriteLine("==============================");
+      static void GGExe (GG_info info) {
+         Console.WriteLine ("==============================");
 
-var doc =new BsonDocument();
-foreach(var s in info.Memory.Take(9)){
-Console.WriteLine(s);
+         var doc = new BsonDocument () {
 
+         };
+         var glist = new List<G_info> ();
 
+while (info.Memory.Count>0)
+{
+    G_info g_ = new G_info (info.Memory.TakeLast (8).ToList (), info.Memory.Take (1).SingleOrDefault ());
+
+         glist.Add (g_);
+
+         info.Memory.RemoveRange(0,9);
+    
 }
+        
 
+         foreach (var i in glist) {
+Console.WriteLine(i.Title);
+            foreach (var s in i.info) {
+               Console.WriteLine (s);
+               // if (!s.StartsWith(" "))
+               // {
 
+               // }
+               // else
+               // {
 
+               // }
 
-     
-Console.WriteLine("==============================");
+            }
+         }
+         Console.WriteLine ("==============================");
+         Console.WriteLine(glist.ToJson());
 
-  }
-  
-  
-  
+      }
+
    }
    public class GG_info {
 
- public     GG_info () {
+      public GG_info () {
          this.BIOS = new List<string> ();
          this.Sysinfo = new List<string> ();
          this.BaseBoard = new List<string> ();
@@ -334,8 +349,9 @@ Console.WriteLine("==============================");
          this.info = new Dictionary<string, string> ();
          foreach (var item in str) {
 
-            var s = item.Split (": ", StringSplitOptions.RemoveEmptyEntries);
-            this.info.Add (s[0], s[1]);
+            var s = item.Split (":", StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine (s[0] + "--" + s[1]);
+            this.info.Add (s[0].Trim (), s[1].Trim ());
 
          }
       }
@@ -359,7 +375,7 @@ Console.WriteLine("==============================");
             try {
                t[1] = t[1].Trim ();
 
-            } catch  {
+            } catch {
                t.Insert (1, "N/A");
                //t.Add("NA");
                //  Console.WriteLine(ex.Message);
