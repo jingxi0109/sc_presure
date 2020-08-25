@@ -1,7 +1,7 @@
+using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 
 namespace sc_presure
 {
@@ -282,6 +282,7 @@ Console.WriteLine("==============================");
 
 foreach(var s in info.Memory)
 Console.WriteLine(s);
+
 
      
 Console.WriteLine("==============================");

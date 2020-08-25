@@ -42,7 +42,7 @@
             },
             "mongodbclient": {
               "target": "Package",
-              "version": "[1.0.22, )"
+              "version": "[*, )"
             }
           },
           "imports": [
