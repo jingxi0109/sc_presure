@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "eqFgYZVfBsnqKHeIMfkheucY8p2WjF8+U816GnGr9Nyf5ySjhgvYTyMnVPCFUenrNpqAxnR+e4tiOvZ4lvp1DQ==",
+  "dgSpecHash": "NtHNJJWBGqEQ62NvkeEdNTVF4vs2HDFjkcpxWR9O0163pdHAx7H0LJk9xW59KW5kDWEl1yUruKRxF4pA1Ai3xg==",
   "success": true,
   "projectFilePath": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
   "expectedPackageFiles": [
-    "/home/jingxi/.nuget/packages/restsharp/106.11.4/restsharp.106.11.4.nupkg.sha512"
+    "/root/.nuget/packages/restsharp/106.11.4/restsharp.106.11.4.nupkg.sha512"
   ],
   "logs": []
 }
