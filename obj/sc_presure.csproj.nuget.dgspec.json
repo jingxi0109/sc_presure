@@ -10,11 +10,11 @@
         "projectUniqueName": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
         "projectName": "sc_presure",
         "projectPath": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
-        "packagesPath": "/root/.nuget/packages/",
+        "packagesPath": "/home/jingxi/.nuget/packages/",
         "outputPath": "/home/jingxi/Code/sc_presure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/root/.nuget/NuGet/NuGet.Config"
+          "/home/jingxi/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -39,6 +39,10 @@
             "RestSharp": {
               "target": "Package",
               "version": "[106.11.4, )"
+            },
+            "mongodbclient": {
+              "target": "Package",
+              "version": "[1.0.22, )"
             }
           },
           "imports": [

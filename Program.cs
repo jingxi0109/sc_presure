@@ -1,18 +1,18 @@
-using System.IO.Compression;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Xml.Linq;
 
-namespace sc_presure {
-   class Program {
+
+namespace sc_presure
+{
+    class Program {
       static void Main (string[] args) {
-         Te ();
+        GGExe(Te ());
 
       }
-      static void Te () {
-     //    Console.WriteLine ("Hello World!");
+      static GG_info Te () {
+         GG_info GGG=new GG_info();
+         //    Console.WriteLine ("Hello World!");
          //IPMI_Access.Foreloop();
          //  Console.WriteLine (LSEX ());
          //IPMI_Access.Foreloop();
@@ -38,11 +38,9 @@ namespace sc_presure {
 
          var res10 = Des_tor.RAWRecord (common_cmd ("  -t memory ", "/sbin/dmidecode"));
          var res11 = Des_tor.RAWRecord (common_cmd ("  -t slot ", "/sbin/dmidecode"));
-          var res12 = Des_tor.RAWRecord (common_cmd ("   ", "/sbin/dmidecode"));
-          var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/bin/lspci"));
-           var res14 = Des_tor.RAWRecord (common_cmd (" -c ifconfig  ", "/bin/bash"));
-
-
+         var res12 = Des_tor.RAWRecord (common_cmd ("   ", "/sbin/dmidecode"));
+         var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/bin/lspci"));
+         var res14 = Des_tor.RAWRecord (common_cmd (" -c ifconfig  ", "/bin/bash"));
 
          var slist1 = res1.Where (z => z[0] == "MAC Address" || z[0] == "IP Adress").ToList ();
          var slist2 = res2.Where (z => z[0] == "Firmware Revision" ||
@@ -71,20 +69,23 @@ namespace sc_presure {
             z[0] == "Average power reading over sample period"
 
          ).ToList ();
-
+         //var Total_list=new List<string>();
          var llist1 = res6.Take (8).TakeLast (4);
          foreach (var re in llist1) {
             Console.WriteLine (re);
+            GGG.BIOS.Add(re);
          }
          Console.WriteLine ("--System--------------");
          var llist2 = res7.Take (9).TakeLast (5);
          foreach (var re in llist2) {
             Console.WriteLine (re);
+            GGG.Sysinfo.Add(re);
          }
          Console.WriteLine ("--BaseBoard--------------");
          var llist3 = res8.Take (9).TakeLast (5);
          foreach (var re in llist3) {
             Console.WriteLine (re);
+            GGG.BaseBoard.Add(re);
          }
          Console.WriteLine ("--Processor--------------");
          var llist4 = res9.Where (z =>
@@ -98,6 +99,7 @@ namespace sc_presure {
          );
          foreach (var re in llist4) {
             Console.WriteLine (re);
+            GGG.Processor.Add(re);
          }
          Console.WriteLine ("--Memory--------------");
          var llist5 = res10.Where (z =>
@@ -112,9 +114,10 @@ namespace sc_presure {
          );
          foreach (var re in llist5) {
             Console.WriteLine (re);
+            GGG.Memory.Add(re);
          }
          Console.WriteLine ("--Slot--------------");
-            var llist6 = res11.Where (z =>
+         var llist6 = res11.Where (z =>
             z.Contains ("System Slot Information") ||
             z.Contains ("Designation:") ||
             z.Contains ("Type:") ||
@@ -122,15 +125,16 @@ namespace sc_presure {
             z.Contains ("Length:") ||
             z.Contains ("ID:") ||
             z.Contains ("Characteristics:") ||
-            z.Contains("3.3 V is")||
-            z.Contains("PME signal is")||
+            z.Contains ("3.3 V is") ||
+            z.Contains ("PME signal is") ||
             z.Contains ("Bus Address:")
          );
          foreach (var re in llist6) {
             Console.WriteLine (re);
+            GGG.PCISlot.Add(re);
          }
          Console.WriteLine ("--Power--------------");
-              var llist7 = res12.Where (z =>
+         var llist7 = res12.Where (z =>
             z.Contains ("Power") //||
             // z.Contains ("Designation:") ||
             // z.Contains ("Type:") ||
@@ -144,9 +148,10 @@ namespace sc_presure {
          );
          foreach (var re in llist7) {
             Console.WriteLine (re);
+            GGG.PowerSuply.Add(re);
          }
          Console.WriteLine ("--EthNet--------------");
-                      var llist8 = res13.Where (z =>
+         var llist8 = res13.Where (z =>
             z.Contains ("Eth") //||
             // z.Contains ("Designation:") ||
             // z.Contains ("Type:") ||
@@ -160,9 +165,10 @@ namespace sc_presure {
          );
          foreach (var re in llist8) {
             Console.WriteLine (re);
+            GGG.Ethernets.Add(re);
          }
          Console.WriteLine ("--------MELL--------");
-                               var llist9 = res13.Where (z =>
+         var llist9 = res13.Where (z =>
             z.Contains ("Mell") //||
             // z.Contains ("Designation:") ||
             // z.Contains ("Type:") ||
@@ -178,7 +184,7 @@ namespace sc_presure {
             Console.WriteLine (re);
          }
          Console.WriteLine ("-----------LSI-----");
-                                   var llist10 = res13.Where (z =>
+         var llist10 = res13.Where (z =>
             z.Contains ("LSI") //||
             // z.Contains ("Designation:") ||
             // z.Contains ("Type:") ||
@@ -194,8 +200,8 @@ namespace sc_presure {
             Console.WriteLine (re);
          }
          Console.WriteLine ("---------LO-------");
-                                        var llist11 = res14.Where (z =>
-            !z.StartsWith(" ")&&!z.Contains("lo") //||
+         var llist11 = res14.Where (z =>
+            !z.StartsWith (" ") && !z.Contains ("lo") //||
             // z.Contains ("Designation:") ||
             // z.Contains ("Type:") ||
             // z.Contains ("Current Usage:") ||
@@ -207,11 +213,12 @@ namespace sc_presure {
             // z.Contains ("Bus Address:")
          );
          foreach (var re in llist11) {
-            Console.WriteLine (re.Split(": ")[0]);
+            Console.WriteLine (re.Split (": ") [0]);
+            GGG.Lo.Add(re.Split (": ") [0]);
          }
          Console.WriteLine ("------IP----------");
-               var llist12 = res14.Where (z =>
-            !z.StartsWith(" ")&&!z.Contains("lo") //||
+         var llist12 = res14.Where (z =>
+            !z.StartsWith (" ") && !z.Contains ("lo") //||
             // z.Contains ("Designation:") ||
             // z.Contains ("Type:") ||
             // z.Contains ("Current Usage:") ||
@@ -222,16 +229,17 @@ namespace sc_presure {
             // z.Contains("PME signal is")||
             // z.Contains ("Bus Address:")
          );
-         
+
          foreach (var re in llist12) {
-        //    Console.WriteLine (re);
-           int index= res14.IndexOf(re);
-           var str= res14[index+1];
-          var res= str.Split(' ',StringSplitOptions.RemoveEmptyEntries);
-           Console.WriteLine(res[1]);
-        
+            //    Console.WriteLine (re);
+            int index = res14.IndexOf (re);
+            var str = res14[index + 1];
+            var res = str.Split (' ', StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine (res[1]);
+            GGG.IP.Add(res[1]);
 
          }
+
          Console.WriteLine ("--Others--------------");
 
          slist1.AddRange (slist2);
@@ -239,7 +247,9 @@ namespace sc_presure {
          slist1.AddRange (slist4);
          foreach (var item in slist1) {
             Console.WriteLine (item[0] + ":" + item[1]);
+            GGG.Others.Add(item[0] + ":" + item[1]);
          }
+         return GGG;
       }
 
       static string common_cmd (string cmd, string filename) {
@@ -263,7 +273,67 @@ namespace sc_presure {
          return result;
       }
 
-   
+  
+  
+  static void GGExe(GG_info info)
+  {
+Console.WriteLine("==============================");
+
+
+foreach(var s in info.Memory)
+Console.WriteLine(s);
+
+     
+Console.WriteLine("==============================");
+
+  }
+  
+  
+  
+   }
+   public class GG_info {
+
+ public     GG_info () {
+         this.BIOS = new List<string> ();
+         this.Sysinfo = new List<string> ();
+         this.BaseBoard = new List<string> ();
+         this.Processor = new List<string> ();
+         this.Memory = new List<string> ();
+         this.PCISlot = new List<string> ();
+         this.PowerSuply = new List<string> ();
+         this.Ethernets = new List<string> ();
+         this.Lo = new List<string> ();
+         this.IP = new List<string> ();
+         this.Others = new List<string> ();
+
+      }
+      public List<string> BIOS { get; set; }
+      public List<string> Sysinfo { get; set; }
+      public List<string> BaseBoard { get; set; }
+      public List<string> Processor { get; set; }
+      public List<string> Memory { get; set; }
+      public List<string> PCISlot { get; set; }
+      public List<string> PowerSuply { get; set; }
+      public List<string> Ethernets { get; set; }
+      public List<string> Lo { get; set; }
+      public List<string> IP { get; set; }
+      public List<string> Others { get; set; }
+
+   }
+   public class G_info {
+      public G_info (List<string> str, string Tit) {
+         this.Title = Tit;
+         this.info = new Dictionary<string, string> ();
+         foreach (var item in str) {
+
+            var s = item.Split (": ", StringSplitOptions.RemoveEmptyEntries);
+            this.info.Add (s[0], s[1]);
+
+         }
+      }
+
+      public string Title { get; set; }
+      public Dictionary<string, string> info { get; set; }
    }
 
    public class Des_tor {
@@ -281,7 +351,7 @@ namespace sc_presure {
             try {
                t[1] = t[1].Trim ();
 
-            } catch (Exception ex) {
+            } catch  {
                t.Insert (1, "N/A");
                //t.Add("NA");
                //  Console.WriteLine(ex.Message);
