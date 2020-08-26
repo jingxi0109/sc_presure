@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -279,8 +280,8 @@ namespace sc_presure {
       static void GGExe (GG_info info) {
          Console.WriteLine ("==============================");
 
-       //  Build_mem (info.Memory);
-       //  Build_cpu (info.Processor);
+         Build_mem (info.Memory);
+         Build_cpu (info.Processor);
          Build_slot (info.PCISlot);
 
       }
@@ -358,17 +359,39 @@ namespace sc_presure {
          return mlist;
 
       }
-      static void Build_slot (List<string> slist) {
+      static  List<slot.Slot> Build_slot (List<string> slist) {
               var glist = new List<G_info> ();
 
          while (slist.Count > 0) {
-            G_info g_ = new G_info (slist.TakeLast (8).ToList (), slist.Take (1).SingleOrDefault ());
+            G_info g_ = new G_info (slist.TakeLast (9).ToList (), slist.Take (1).SingleOrDefault ());
 
             glist.Add (g_);
 
-            slist.RemoveRange (slist.Count - 9, 9);
+            slist.RemoveRange (slist.Count - 10, 10);
 
          }
+              foreach (var i in glist) {
+            Console.WriteLine (i.Title);
+            foreach (var s in i.info) {
+               Console.WriteLine (s);
+               // if (!s.StartsWith(" "))
+               // {
+
+               // }
+               // else
+               // {
+
+               // }
+
+            }
+         }
+         //Console.WriteLine(glist.ToJson());
+
+          List<slot.Slot> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<slot.Slot>> (glist.ToJson ());
+
+         Console.WriteLine (mlist.Where (z => z.Info.CurrentUsage == "In Use").Count ());
+         return mlist;
+        //  Console.WriteLine ("==============================");
 
       }
 
@@ -410,7 +433,38 @@ namespace sc_presure {
 
             var s = item.Split (":", StringSplitOptions.RemoveEmptyEntries);
             // Console.WriteLine (s[0] + "--" + s[1]);
-            this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ());
+            
+            try
+            {
+               if (s.Length>3)
+               {
+                     this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ()+":"+s[2].Trim ()+":"+s[3].Trim ());
+               }
+               else
+               {
+                    if (s[0].Contains("Characteristics")){
+                this.info.Add (s[0].Trim ().Replace (" ", ""), "");
+                }else{
+                this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ());
+                }
+               }
+               
+
+            }
+            catch (System.Exception)
+            {
+              
+if ( this.info["Characteristics"]=="")
+{
+     this.info["Characteristics"]+=s[0].Trim ()+" / ";
+}else{
+   this.info["Characteristics"]+=s[0].Trim ();
+
+}
+             
+                
+            }
+            
 
          }
       }
@@ -557,5 +611,24 @@ namespace sc_presure {
          public string CurrentSpeed { get; set; }
       }
 
+
+   }
+   namespace slot{
+          public partial class Slot
+    {
+        public string Title { get; set; }
+        public Info Info { get; set; }
+    }
+
+    public partial class Info
+    {
+        public string Designation { get; set; }
+        public string Type { get; set; }
+        public string CurrentUsage { get; set; }
+        public string Length { get; set; }
+        public long Id { get; set; }
+        public string Characteristics { get; set; }
+        public string BusAddress { get; set; }
+    }
    }
 }
