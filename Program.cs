@@ -10,6 +10,7 @@ using MongoDB;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using Newtonsoft;
+using sc_presure.sc_server;
 
 namespace sc_presure {
    class Program {
@@ -280,7 +281,7 @@ namespace sc_presure {
          return result;
       }
 
-     public static Server_info Srv_Factory () {
+     public static ServerInfo Srv_Factory () {
          GG_info info= Te ();
          Console.WriteLine ("==============================");
          Server_info srv=new Server_info();
@@ -318,13 +319,14 @@ namespace sc_presure {
          // foreach (var item in slot) {
          
              
-          string j=   JsonConvert.SerializeObject(srv);
-             Console.WriteLine (j);
+          string j=  Newtonsoft.Json. JsonConvert.SerializeObject(srv);
+     var sinfo=      Newtonsoft.Json.JsonConvert.DeserializeObject<sc_server.ServerInfo> (j);
+             Console.WriteLine (sinfo.ToJson());
 
          // }
 
           Console.WriteLine ("==============================");
-         return srv;
+         return sinfo;
 
       }
       static List<string> Build_Bios (List<string> slist) {
@@ -410,7 +412,7 @@ namespace sc_presure {
          //   var doc =BsonDocument.Parse(glist.ToJson());
          List<mem.Memory> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<mem.Memory>> (glist.ToJson ());
 
-         Console.WriteLine (mlist.Where (z => z.Info.Size == "16384 MB").Count ());
+     //    Console.WriteLine (mlist.Where (z => z.Info.Size == "16384 MB").Count ());
          return mlist;
 
       }
@@ -444,7 +446,7 @@ namespace sc_presure {
 
          List<slot.Slot> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<slot.Slot>> (glist.ToJson ());
 
-         Console.WriteLine (mlist.Where (z => z.Info.CurrentUsage == "In Use").Count ());
+      //   Console.WriteLine (mlist.Where (z => z.Info.CurrentUsage == "In Use").Count ());
          return mlist;
          //  Console.WriteLine ("==============================");
 
@@ -686,4 +688,84 @@ public List<string> IP{set;get;}
          public string BusAddress { get; set; }
       }
    }
+namespace sc_server
+{
+
+    public partial class ServerInfo
+    {
+        public List<Memory> Memory { get; set; }
+        public List<Cpu> Cpu { get; set; }
+        public List<PCiSlot> PCiSlot { get; set; }
+        public List<string> Bios { get; set; }
+        public List<string> Sysinfo { get; set; }
+        public List<string> BaseBoard { get; set; }
+        public List<string> Others { get; set; }
+        public List<string> EthNet { get; set; }
+        public List<string> Lo { get; set; }
+        public List<string> Ip { get; set; }
+    }
+
+    public partial class Cpu
+    {
+        public string Title { get; set; }
+        public CpuInfo Info { get; set; }
+    }
+
+    public partial class CpuInfo
+    {
+        public string SocketDesignation { get; set; }
+        public string Version { get; set; }
+        public string Voltage { get; set; }
+        public string ExternalClock { get; set; }
+        public string MaxSpeed { get; set; }
+        public string CurrentSpeed { get; set; }
+    }
+
+    public partial class Memory
+    {
+        public string Title { get; set; }
+        public MemoryInfo Info { get; set; }
+    }
+
+    public partial class MemoryInfo
+    {
+        public string Size { get; set; }
+        public string Locator { get; set; }
+        public string BankLocator { get; set; }
+        public string Speed { get; set; }
+        public string Manufacturer { get; set; }
+        public string PartNumber { get; set; }
+        public string ConfiguredMemorySpeed { get; set; }
+        public string ConfiguredVoltage { get; set; }
+    }
+
+    public partial class PCiSlot
+    {
+        public string Title { get; set; }
+        public PCiSlotInfo Info { get; set; }
+    }
+
+    public partial class PCiSlotInfo
+    {
+        public string Designation { get; set; }
+        public string Type { get; set; }
+        public string CurrentUsage { get; set; }
+        public string Length { get; set; }
+        public long Id { get; set; }
+        public string Characteristics { get; set; }
+        public string BusAddress { get; set; }
+    }
+
+   //  public enum ConfiguredMemorySpeed { The1600MtS, Unknown };
+
+   //  public enum ConfiguredVoltage { The2133MtS, Unknown };
+
+   //  public enum Manufacturer { Micron, NoDimm };
+
+   //  public enum PartNumber { NoDimm, The36Asf2G72Pz2G1A2 };
+
+   //  public enum Size { NoModuleInstalled, The16384Mb };
+
+   //  public enum Title { MemoryDevice };
+}
 }
