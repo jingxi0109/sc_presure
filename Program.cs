@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using MongoDB;
 using MongoDB.Bson;
@@ -278,40 +279,96 @@ namespace sc_presure {
       static void GGExe (GG_info info) {
          Console.WriteLine ("==============================");
 
-       
+       //  Build_mem (info.Memory);
+       //  Build_cpu (info.Processor);
+         Build_slot (info.PCISlot);
+
+      }
+      static List<cpu.Cpu> Build_cpu (List<string> slist) {
          var glist = new List<G_info> ();
 
-         while (info.Memory.Count > 0) {
-            G_info g_ = new G_info (info.Memory.TakeLast (8).ToList (), info.Memory.Take (1).SingleOrDefault ());
+         while (slist.Count > 0) {
+            G_info g_ = new G_info (slist.TakeLast (6).ToList (), slist.Take (1).SingleOrDefault ());
 
             glist.Add (g_);
 
-            info.Memory.RemoveRange (info.Memory.Count-9, 9);
+            slist.RemoveRange (slist.Count - 7, 7);
+
+         }
+         //     foreach (var i in glist) {
+         //    Console.WriteLine (i.Title);
+         //    foreach (var s in i.info) {
+         //       Console.WriteLine (s);
+         //       if (!s.StartsWith(" "))
+         //       {
+
+         //       }
+         //       else
+         //       {
+
+         //       }
+
+         //    }
+         // }
+         //   Console.WriteLine(glist.ToJson());
+         //       Console.WriteLine ("==============================");
+         //   Console.WriteLine (glist.ToJson ());
+         // var mlist=new List<Memory>();
+         //   var doc =BsonDocument.Parse(glist.ToJson());
+         List<cpu.Cpu> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<cpu.Cpu>> (glist.ToJson ());
+
+         //  Console.WriteLine(mlist.Where(z=>z.Info.SocketDesignation=="CPU1").Count());
+         return mlist;
+      }
+      static List<mem.Memory> Build_mem (List<string> slist) {
+
+         var glist = new List<G_info> ();
+
+         while (slist.Count > 0) {
+            G_info g_ = new G_info (slist.TakeLast (8).ToList (), slist.Take (1).SingleOrDefault ());
+
+            glist.Add (g_);
+
+            slist.RemoveRange (slist.Count - 9, 9);
 
          }
 
-         foreach (var i in glist) {
-            Console.WriteLine (i.Title);
-            foreach (var s in i.info) {
-               Console.WriteLine (s);
-               // if (!s.StartsWith(" "))
-               // {
+         // foreach (var i in glist) {
+         //    Console.WriteLine (i.Title);
+         //    foreach (var s in i.info) {
+         //       Console.WriteLine (s);
+         //       // if (!s.StartsWith(" "))
+         //       // {
 
-               // }
-               // else
-               // {
+         //       // }
+         //       // else
+         //       // {
 
-               // }
+         //       // }
 
-            }
+         //    }
+         // }
+         //  Console.WriteLine ("==============================");
+         //   Console.WriteLine (glist.ToJson ());
+         // var mlist=new List<Memory>();
+         //   var doc =BsonDocument.Parse(glist.ToJson());
+         List<mem.Memory> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<mem.Memory>> (glist.ToJson ());
+
+         Console.WriteLine (mlist.Where (z => z.Info.Size == "16384 MB").Count ());
+         return mlist;
+
+      }
+      static void Build_slot (List<string> slist) {
+              var glist = new List<G_info> ();
+
+         while (slist.Count > 0) {
+            G_info g_ = new G_info (slist.TakeLast (8).ToList (), slist.Take (1).SingleOrDefault ());
+
+            glist.Add (g_);
+
+            slist.RemoveRange (slist.Count - 9, 9);
+
          }
-         Console.WriteLine ("==============================");
-      //   Console.WriteLine (glist.ToJson ());
-        // var mlist=new List<Memory>();
-      //   var doc =BsonDocument.Parse(glist.ToJson());
-      List<Memory> mlist=Newtonsoft.Json.JsonConvert.DeserializeObject<List<Memory>>(glist.ToJson());
-         
-         Console.WriteLine(mlist.Where(z=>z.Info.Size=="16384 MB").Count());
 
       }
 
@@ -352,8 +409,8 @@ namespace sc_presure {
          foreach (var item in str) {
 
             var s = item.Split (":", StringSplitOptions.RemoveEmptyEntries);
-           // Console.WriteLine (s[0] + "--" + s[1]);
-            this.info.Add (s[0].Trim ().Replace(" ",""), s[1].Trim ());
+            // Console.WriteLine (s[0] + "--" + s[1]);
+            this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ());
 
          }
       }
@@ -455,33 +512,50 @@ namespace sc_presure {
          return sslist;
       }
    }
-    public partial class Memory
-    {
-        public string Title { get; set; }
-        public Info Info { get; set; }
-    }
 
-    public partial class Info
-    {
-        public string Size { get; set; }
-        public string Locator { get; set; }
-        public string BankLocator { get; set; }
-        public string Speed { get; set; }
-        public string Manufacturer { get; set; }
-        public string PartNumber { get; set; }
-        public string ConfiguredMemorySpeed { get; set; }
-        public string ConfiguredVoltage { get; set; }
-    }
+   //  public enum BankLocator { P1Node1Channel3Dimm1 };
 
-  //  public enum BankLocator { P1Node1Channel3Dimm1 };
+   //   public enum ConfiguredMemorySpeed { Unknown };
 
- //   public enum ConfiguredMemorySpeed { Unknown };
+   //   public enum Locator { P2Dimmh2 };
 
- //   public enum Locator { P2Dimmh2 };
+   //  public enum Manufacturer { NoDimm };
 
-  //  public enum Manufacturer { NoDimm };
+   //  public enum Size { NoModuleInstalled };
 
-  //  public enum Size { NoModuleInstalled };
+   //public enum Title { MemoryDevice };
+   namespace mem {
+      public partial class Memory {
+         public string Title { get; set; }
+         public Info Info { get; set; }
+      }
 
-    //public enum Title { MemoryDevice };
+      public partial class Info {
+         public string Size { get; set; }
+         public string Locator { get; set; }
+         public string BankLocator { get; set; }
+         public string Speed { get; set; }
+         public string Manufacturer { get; set; }
+         public string PartNumber { get; set; }
+         public string ConfiguredMemorySpeed { get; set; }
+         public string ConfiguredVoltage { get; set; }
+      }
+
+   }
+   namespace cpu {
+      public partial class Cpu {
+         public string Title { get; set; }
+         public Info Info { get; set; }
+      }
+
+      public partial class Info {
+         public string SocketDesignation { get; set; }
+         public string Version { get; set; }
+         public string Voltage { get; set; }
+         public string ExternalClock { get; set; }
+         public string MaxSpeed { get; set; }
+         public string CurrentSpeed { get; set; }
+      }
+
+   }
 }
