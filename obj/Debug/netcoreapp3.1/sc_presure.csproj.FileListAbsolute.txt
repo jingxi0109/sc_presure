@@ -49,3 +49,4 @@
 /home/jingxi/Code/sc_presure/bin/Debug/netcoreapp3.1/MongoDB.Driver.Core.dll
 /home/jingxi/Code/sc_presure/bin/Debug/netcoreapp3.1/MongoDbContext.dll
 /home/jingxi/Code/sc_presure/bin/Debug/netcoreapp3.1/SharpCompress.dll
+/home/jingxi/Code/sc_presure/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll

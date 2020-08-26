@@ -6,6 +6,7 @@
   </PropertyGroup>
  <ItemGroup>
     <PackageReference Include="mongodbclient" Version="1.0.22" />
+    <PackageReference Include="Newtonsoft.json" Version="12.0.3" />
     <PackageReference Include="RestSharp" Version="106.11.4" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9pqN4m0W/jXqZh8MUcYQzH876p5Vlf5SiOyq4hOnbYGCQne6fOAg4IDp0M/xJWmbLPEsZ15VqpJ0RY9MyH+qLg==",
+  "dgSpecHash": "SyxX1XpY3YA5gP6MFfSKkTcs/oW58ZWzg34CM/jsbz0KDz5sv66q59Hx071ID0h5m76pt+4MpxVXGthByZ88Fg==",
   "success": true,
   "projectFilePath": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
   "expectedPackageFiles": [
@@ -14,6 +14,7 @@
     "/root/.nuget/packages/mongodb.driver.core/2.9.1/mongodb.driver.core.2.9.1.nupkg.sha512",
     "/root/.nuget/packages/mongodbclient/1.0.22/mongodbclient.1.0.22.nupkg.sha512",
     "/root/.nuget/packages/netstandard.library/1.6.1/netstandard.library.1.6.1.nupkg.sha512",
+    "/root/.nuget/packages/newtonsoft.json/12.0.3/newtonsoft.json.12.0.3.nupkg.sha512",
     "/root/.nuget/packages/restsharp/106.11.4/restsharp.106.11.4.nupkg.sha512",
     "/root/.nuget/packages/runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl/4.3.2/runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "/root/.nuget/packages/runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl/4.3.2/runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",

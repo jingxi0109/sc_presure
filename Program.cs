@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using MongoDB;
 using MongoDB.Bson;
+using MongoDB.Bson.IO;
 
 namespace sc_presure {
    class Program {
@@ -285,7 +286,7 @@ namespace sc_presure {
 
             glist.Add (g_);
 
-            info.Memory.RemoveRange (0, 9);
+            info.Memory.RemoveRange (info.Memory.Count-9, 9);
 
          }
 
@@ -305,7 +306,12 @@ namespace sc_presure {
             }
          }
          Console.WriteLine ("==============================");
-         Console.WriteLine (glist.ToJson ());
+      //   Console.WriteLine (glist.ToJson ());
+        // var mlist=new List<Memory>();
+      //   var doc =BsonDocument.Parse(glist.ToJson());
+      List<Memory> mlist=Newtonsoft.Json.JsonConvert.DeserializeObject<List<Memory>>(glist.ToJson());
+         
+         Console.WriteLine(mlist.Where(z=>z.Info.Size=="16384 MB").Count());
 
       }
 
@@ -347,7 +353,7 @@ namespace sc_presure {
 
             var s = item.Split (":", StringSplitOptions.RemoveEmptyEntries);
            // Console.WriteLine (s[0] + "--" + s[1]);
-            this.info.Add (s[0].Trim (), s[1].Trim ());
+            this.info.Add (s[0].Trim ().Replace(" ",""), s[1].Trim ());
 
          }
       }
@@ -449,4 +455,33 @@ namespace sc_presure {
          return sslist;
       }
    }
+    public partial class Memory
+    {
+        public string Title { get; set; }
+        public Info Info { get; set; }
+    }
+
+    public partial class Info
+    {
+        public string Size { get; set; }
+        public string Locator { get; set; }
+        public string BankLocator { get; set; }
+        public string Speed { get; set; }
+        public string Manufacturer { get; set; }
+        public string PartNumber { get; set; }
+        public string ConfiguredMemorySpeed { get; set; }
+        public string ConfiguredVoltage { get; set; }
+    }
+
+  //  public enum BankLocator { P1Node1Channel3Dimm1 };
+
+ //   public enum ConfiguredMemorySpeed { Unknown };
+
+ //   public enum Locator { P2Dimmh2 };
+
+  //  public enum Manufacturer { NoDimm };
+
+  //  public enum Size { NoModuleInstalled };
+
+    //public enum Title { MemoryDevice };
 }
