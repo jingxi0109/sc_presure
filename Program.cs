@@ -1,17 +1,20 @@
-using System.Security.AccessControl;
+using System.Net.Cache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Xml.Schema;
 using MongoDB;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
+using Newtonsoft;
 
 namespace sc_presure {
    class Program {
       static void Main (string[] args) {
-         GGExe (Te ());
+         Srv_Factory ();
 
       }
       static GG_info Te () {
@@ -277,14 +280,66 @@ namespace sc_presure {
          return result;
       }
 
-      static void GGExe (GG_info info) {
+     public static Server_info Srv_Factory () {
+         GG_info info= Te ();
          Console.WriteLine ("==============================");
+         Server_info srv=new Server_info();
 
-         Build_mem (info.Memory);
-         Build_cpu (info.Processor);
-         Build_slot (info.PCISlot);
+         srv.Memory = Build_mem (info.Memory);
+         srv.CPU = Build_cpu (info.Processor);
+      srv.PCiSLOT = Build_slot (info.PCISlot);
+         srv.BIOS = Build_Bios (info.BIOS);
+         srv.Sysinfo = Build_Sysinfo (info.Sysinfo);
+         srv.Base_Board = Build_BaseBoard (info.BaseBoard);
+         srv.others =info.Others;
+         srv.EthNET=info.Ethernets;
+         srv.LO=info.Lo;
+         srv.IP=info.IP;
+         
+
+         // foreach (var item in bios) {
+         //    Console.WriteLine (item);
+
+         // }
+         // Console.WriteLine ("==============================");
+
+         // foreach (var item in sys) {
+         //    Console.WriteLine (item);
+
+         // }
+         // Console.WriteLine ("==============================");
+
+         // foreach (var item in bb) {
+         //    Console.WriteLine (item);
+
+         // }
+         // Console.WriteLine ("==============================");
+
+         // foreach (var item in slot) {
+         
+             
+          string j=   JsonConvert.SerializeObject(srv);
+             Console.WriteLine (j);
+
+         // }
+
+          Console.WriteLine ("==============================");
+         return srv;
 
       }
+      static List<string> Build_Bios (List<string> slist) {
+         slist.RemoveAt (0);
+         return slist;
+      }
+      static List<string> Build_Sysinfo (List<string> slist) {
+         slist.RemoveAt (0);
+         return slist;
+      }
+      static List<string> Build_BaseBoard (List<string> slist) {
+         slist.RemoveAt (0);
+         return slist;
+      }
+
       static List<cpu.Cpu> Build_cpu (List<string> slist) {
          var glist = new List<G_info> ();
 
@@ -303,7 +358,7 @@ namespace sc_presure {
          //       if (!s.StartsWith(" "))
          //       {
 
-         //       }
+         //       } 
          //       else
          //       {
 
@@ -359,8 +414,8 @@ namespace sc_presure {
          return mlist;
 
       }
-      static  List<slot.Slot> Build_slot (List<string> slist) {
-              var glist = new List<G_info> ();
+      static List<slot.Slot> Build_slot (List<string> slist) {
+         var glist = new List<G_info> ();
 
          while (slist.Count > 0) {
             G_info g_ = new G_info (slist.TakeLast (9).ToList (), slist.Take (1).SingleOrDefault ());
@@ -370,7 +425,7 @@ namespace sc_presure {
             slist.RemoveRange (slist.Count - 10, 10);
 
          }
-              foreach (var i in glist) {
+         foreach (var i in glist) {
             Console.WriteLine (i.Title);
             foreach (var s in i.info) {
                Console.WriteLine (s);
@@ -387,11 +442,11 @@ namespace sc_presure {
          }
          //Console.WriteLine(glist.ToJson());
 
-          List<slot.Slot> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<slot.Slot>> (glist.ToJson ());
+         List<slot.Slot> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<slot.Slot>> (glist.ToJson ());
 
          Console.WriteLine (mlist.Where (z => z.Info.CurrentUsage == "In Use").Count ());
          return mlist;
-        //  Console.WriteLine ("==============================");
+         //  Console.WriteLine ("==============================");
 
       }
 
@@ -433,38 +488,28 @@ namespace sc_presure {
 
             var s = item.Split (":", StringSplitOptions.RemoveEmptyEntries);
             // Console.WriteLine (s[0] + "--" + s[1]);
-            
-            try
-            {
-               if (s.Length>3)
-               {
-                     this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ()+":"+s[2].Trim ()+":"+s[3].Trim ());
+
+            try {
+               if (s.Length > 3) {
+                  this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim () + ":" + s[2].Trim () + ":" + s[3].Trim ());
+               } else {
+                  if (s[0].Contains ("Characteristics")) {
+                     this.info.Add (s[0].Trim ().Replace (" ", ""), "");
+                  } else {
+                     this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ());
+                  }
                }
-               else
-               {
-                    if (s[0].Contains("Characteristics")){
-                this.info.Add (s[0].Trim ().Replace (" ", ""), "");
-                }else{
-                this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ());
-                }
+
+            } catch (System.Exception) {
+
+               if (this.info["Characteristics"] == "") {
+                  this.info["Characteristics"] += s[0].Trim () + " / ";
+               } else {
+                  this.info["Characteristics"] += s[0].Trim ();
+
                }
-               
 
             }
-            catch (System.Exception)
-            {
-              
-if ( this.info["Characteristics"]=="")
-{
-     this.info["Characteristics"]+=s[0].Trim ()+" / ";
-}else{
-   this.info["Characteristics"]+=s[0].Trim ();
-
-}
-             
-                
-            }
-            
 
          }
       }
@@ -567,6 +612,19 @@ if ( this.info["Characteristics"]=="")
       }
    }
 
+
+public class Server_info{
+   public List<mem.Memory> Memory { get; set; }
+   public List<cpu.Cpu> CPU { get; set; }
+   public List<slot.Slot> PCiSLOT { get; set; }
+   public List<string> BIOS{set;get;}
+   public List<string> Sysinfo{set;get;}
+public List<string> Base_Board{set;get;}
+public List<string> others {set;get;}
+public List<string> EthNET{set;get;}
+public List<string> LO{set;get;}
+public List<string> IP{set;get;}
+}
    //  public enum BankLocator { P1Node1Channel3Dimm1 };
 
    //   public enum ConfiguredMemorySpeed { Unknown };
@@ -611,24 +669,21 @@ if ( this.info["Characteristics"]=="")
          public string CurrentSpeed { get; set; }
       }
 
-
    }
-   namespace slot{
-          public partial class Slot
-    {
-        public string Title { get; set; }
-        public Info Info { get; set; }
-    }
+   namespace slot {
+      public partial class Slot {
+         public string Title { get; set; }
+         public Info Info { get; set; }
+      }
 
-    public partial class Info
-    {
-        public string Designation { get; set; }
-        public string Type { get; set; }
-        public string CurrentUsage { get; set; }
-        public string Length { get; set; }
-        public long Id { get; set; }
-        public string Characteristics { get; set; }
-        public string BusAddress { get; set; }
-    }
+      public partial class Info {
+         public string Designation { get; set; }
+         public string Type { get; set; }
+         public string CurrentUsage { get; set; }
+         public string Length { get; set; }
+         public long Id { get; set; }
+         public string Characteristics { get; set; }
+         public string BusAddress { get; set; }
+      }
    }
 }
