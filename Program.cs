@@ -1,9 +1,9 @@
-using System.Net.Cache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net.Cache;
 using System.Security.AccessControl;
 using System.Xml.Schema;
 using MongoDB;
@@ -18,8 +18,8 @@ namespace sc_presure {
          Srv_Factory ();
 
       }
-      static GG_info Te () {
-         GG_info GGG = new GG_info ();
+      static G_RAW_info Te () {
+         G_RAW_info GGG = new G_RAW_info ();
          //    Console.WriteLine ("Hello World!");
          //IPMI_Access.Foreloop();
          //  Console.WriteLine (LSEX ());
@@ -281,22 +281,21 @@ namespace sc_presure {
          return result;
       }
 
-     public static ServerInfo Srv_Factory () {
-         GG_info info= Te ();
+      public static ServerInfo Srv_Factory () {
+         G_RAW_info info = Te ();
          Console.WriteLine ("==============================");
-         Server_info srv=new Server_info();
+         Server_info srv = new Server_info ();
 
          srv.Memory = Build_mem (info.Memory);
          srv.CPU = Build_cpu (info.Processor);
-      srv.PCiSLOT = Build_slot (info.PCISlot);
+         srv.PCiSLOT = Build_slot (info.PCISlot);
          srv.BIOS = Build_Bios (info.BIOS);
          srv.Sysinfo = Build_Sysinfo (info.Sysinfo);
          srv.Base_Board = Build_BaseBoard (info.BaseBoard);
-         srv.others =info.Others;
-         srv.EthNET=info.Ethernets;
-         srv.LO=info.Lo;
-         srv.IP=info.IP;
-         
+         srv.others = info.Others;
+         srv.EthNET = info.Ethernets;
+         srv.LO = info.Lo;
+         srv.IP = info.IP;
 
          // foreach (var item in bios) {
          //    Console.WriteLine (item);
@@ -317,15 +316,14 @@ namespace sc_presure {
          // Console.WriteLine ("==============================");
 
          // foreach (var item in slot) {
-         
-             
-          string j=  Newtonsoft.Json. JsonConvert.SerializeObject(srv);
-     var sinfo=      Newtonsoft.Json.JsonConvert.DeserializeObject<sc_server.ServerInfo> (j);
-             Console.WriteLine (sinfo.ToJson());
+
+         string j = Newtonsoft.Json.JsonConvert.SerializeObject (srv);
+         var sinfo = Newtonsoft.Json.JsonConvert.DeserializeObject<sc_server.ServerInfo> (j);
+         Console.WriteLine (sinfo.ToJson ());
 
          // }
 
-          Console.WriteLine ("==============================");
+         Console.WriteLine ("==============================");
          return sinfo;
 
       }
@@ -412,7 +410,7 @@ namespace sc_presure {
          //   var doc =BsonDocument.Parse(glist.ToJson());
          List<mem.Memory> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<mem.Memory>> (glist.ToJson ());
 
-     //    Console.WriteLine (mlist.Where (z => z.Info.Size == "16384 MB").Count ());
+         //    Console.WriteLine (mlist.Where (z => z.Info.Size == "16384 MB").Count ());
          return mlist;
 
       }
@@ -446,16 +444,16 @@ namespace sc_presure {
 
          List<slot.Slot> mlist = Newtonsoft.Json.JsonConvert.DeserializeObject<List<slot.Slot>> (glist.ToJson ());
 
-      //   Console.WriteLine (mlist.Where (z => z.Info.CurrentUsage == "In Use").Count ());
+         //   Console.WriteLine (mlist.Where (z => z.Info.CurrentUsage == "In Use").Count ());
          return mlist;
          //  Console.WriteLine ("==============================");
 
       }
 
    }
-   public class GG_info {
+   public class G_RAW_info {
 
-      public GG_info () {
+      public G_RAW_info () {
          this.BIOS = new List<string> ();
          this.Sysinfo = new List<string> ();
          this.BaseBoard = new List<string> ();
@@ -614,19 +612,18 @@ namespace sc_presure {
       }
    }
 
-
-public class Server_info{
-   public List<mem.Memory> Memory { get; set; }
-   public List<cpu.Cpu> CPU { get; set; }
-   public List<slot.Slot> PCiSLOT { get; set; }
-   public List<string> BIOS{set;get;}
-   public List<string> Sysinfo{set;get;}
-public List<string> Base_Board{set;get;}
-public List<string> others {set;get;}
-public List<string> EthNET{set;get;}
-public List<string> LO{set;get;}
-public List<string> IP{set;get;}
-}
+   public class Server_info {
+      public List<mem.Memory> Memory { get; set; }
+      public List<cpu.Cpu> CPU { get; set; }
+      public List<slot.Slot> PCiSLOT { get; set; }
+      public List<string> BIOS { set; get; }
+      public List<string> Sysinfo { set; get; }
+      public List<string> Base_Board { set; get; }
+      public List<string> others { set; get; }
+      public List<string> EthNET { set; get; }
+      public List<string> LO { set; get; }
+      public List<string> IP { set; get; }
+   }
    //  public enum BankLocator { P1Node1Channel3Dimm1 };
 
    //   public enum ConfiguredMemorySpeed { Unknown };
@@ -688,84 +685,76 @@ public List<string> IP{set;get;}
          public string BusAddress { get; set; }
       }
    }
-namespace sc_server
-{
+   namespace sc_server {
 
-    public partial class ServerInfo
-    {
-        public List<Memory> Memory { get; set; }
-        public List<Cpu> Cpu { get; set; }
-        public List<PCiSlot> PCiSlot { get; set; }
-        public List<string> Bios { get; set; }
-        public List<string> Sysinfo { get; set; }
-        public List<string> BaseBoard { get; set; }
-        public List<string> Others { get; set; }
-        public List<string> EthNet { get; set; }
-        public List<string> Lo { get; set; }
-        public List<string> Ip { get; set; }
-    }
+      public partial class ServerInfo {
+         public List<Memory> Memory { get; set; }
+         public List<Cpu> Cpu { get; set; }
+         public List<PCiSlot> PCiSlot { get; set; }
+         public List<string> Bios { get; set; }
+         public List<string> Sysinfo { get; set; }
+         public List<string> BaseBoard { get; set; }
+         public List<string> Others { get; set; }
+         public List<string> EthNet { get; set; }
+         public List<string> Lo { get; set; }
+         public List<string> Ip { get; set; }
+      }
 
-    public partial class Cpu
-    {
-        public string Title { get; set; }
-        public CpuInfo Info { get; set; }
-    }
+      public partial class Cpu {
+         public string Title { get; set; }
+         public CpuInfo Info { get; set; }
+      }
 
-    public partial class CpuInfo
-    {
-        public string SocketDesignation { get; set; }
-        public string Version { get; set; }
-        public string Voltage { get; set; }
-        public string ExternalClock { get; set; }
-        public string MaxSpeed { get; set; }
-        public string CurrentSpeed { get; set; }
-    }
+      public partial class CpuInfo {
+         public string SocketDesignation { get; set; }
+         public string Version { get; set; }
+         public string Voltage { get; set; }
+         public string ExternalClock { get; set; }
+         public string MaxSpeed { get; set; }
+         public string CurrentSpeed { get; set; }
+      }
 
-    public partial class Memory
-    {
-        public string Title { get; set; }
-        public MemoryInfo Info { get; set; }
-    }
+      public partial class Memory {
+         public string Title { get; set; }
+         public MemoryInfo Info { get; set; }
+      }
 
-    public partial class MemoryInfo
-    {
-        public string Size { get; set; }
-        public string Locator { get; set; }
-        public string BankLocator { get; set; }
-        public string Speed { get; set; }
-        public string Manufacturer { get; set; }
-        public string PartNumber { get; set; }
-        public string ConfiguredMemorySpeed { get; set; }
-        public string ConfiguredVoltage { get; set; }
-    }
+      public partial class MemoryInfo {
+         public string Size { get; set; }
+         public string Locator { get; set; }
+         public string BankLocator { get; set; }
+         public string Speed { get; set; }
+         public string Manufacturer { get; set; }
+         public string PartNumber { get; set; }
+         public string ConfiguredMemorySpeed { get; set; }
+         public string ConfiguredVoltage { get; set; }
+      }
 
-    public partial class PCiSlot
-    {
-        public string Title { get; set; }
-        public PCiSlotInfo Info { get; set; }
-    }
+      public partial class PCiSlot {
+         public string Title { get; set; }
+         public PCiSlotInfo Info { get; set; }
+      }
 
-    public partial class PCiSlotInfo
-    {
-        public string Designation { get; set; }
-        public string Type { get; set; }
-        public string CurrentUsage { get; set; }
-        public string Length { get; set; }
-        public long Id { get; set; }
-        public string Characteristics { get; set; }
-        public string BusAddress { get; set; }
-    }
+      public partial class PCiSlotInfo {
+         public string Designation { get; set; }
+         public string Type { get; set; }
+         public string CurrentUsage { get; set; }
+         public string Length { get; set; }
+         public long Id { get; set; }
+         public string Characteristics { get; set; }
+         public string BusAddress { get; set; }
+      }
 
-   //  public enum ConfiguredMemorySpeed { The1600MtS, Unknown };
+      //  public enum ConfiguredMemorySpeed { The1600MtS, Unknown };
 
-   //  public enum ConfiguredVoltage { The2133MtS, Unknown };
+      //  public enum ConfiguredVoltage { The2133MtS, Unknown };
 
-   //  public enum Manufacturer { Micron, NoDimm };
+      //  public enum Manufacturer { Micron, NoDimm };
 
-   //  public enum PartNumber { NoDimm, The36Asf2G72Pz2G1A2 };
+      //  public enum PartNumber { NoDimm, The36Asf2G72Pz2G1A2 };
 
-   //  public enum Size { NoModuleInstalled, The16384Mb };
+      //  public enum Size { NoModuleInstalled, The16384Mb };
 
-   //  public enum Title { MemoryDevice };
-}
+      //  public enum Title { MemoryDevice };
+   }
 }
