@@ -10,12 +10,22 @@ using MongoDB;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using Newtonsoft;
+using RestSharp;
 using sc_presure.sc_server;
 
 namespace sc_presure {
    class Program {
       static void Main (string[] args) {
-         Srv_Factory ();
+
+       string res=Newtonsoft.Json. JsonConvert.SerializeObject( Srv_Factory ());
+         var client = new RestClient("http://app.chinasupercloud.com:8088/support/api/ipmi");
+client.Timeout = -1;
+var request = new RestRequest(Method.POST);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", res,  ParameterType.RequestBody);
+IRestResponse response = client.Execute(request);
+Console.WriteLine(response.Content);
+        
 
       }
       static G_RAW_info Te () {
@@ -292,6 +302,16 @@ namespace sc_presure {
          srv.BIOS = Build_Bios (info.BIOS);
          srv.Sysinfo = Build_Sysinfo (info.Sysinfo);
          srv.Base_Board = Build_BaseBoard (info.BaseBoard);
+
+//            Console.WriteLine ("==============================");
+
+// foreach (var item in srv.Base_Board)
+// {
+//     Console.WriteLine(item);
+// }
+
+//              Console.WriteLine ("==============================");
+
          srv.others = info.Others;
          srv.EthNET = info.Ethernets;
          srv.LO = info.Lo;
@@ -318,6 +338,14 @@ namespace sc_presure {
          // foreach (var item in slot) {
 
          string j = Newtonsoft.Json.JsonConvert.SerializeObject (srv);
+                    Console.WriteLine ("==============================");
+
+//foreach (var item in srv.Base_Board)
+//{
+    Console.WriteLine(j);
+
+
+             Console.WriteLine ("==============================");
          var sinfo = Newtonsoft.Json.JsonConvert.DeserializeObject<sc_server.ServerInfo> (j);
          Console.WriteLine (sinfo.ToJson ());
 
@@ -693,7 +721,7 @@ namespace sc_presure {
          public List<PCiSlot> PCiSlot { get; set; }
          public List<string> Bios { get; set; }
          public List<string> Sysinfo { get; set; }
-         public List<string> BaseBoard { get; set; }
+         public List<string> Base_Board { get; set; }
          public List<string> Others { get; set; }
          public List<string> EthNet { get; set; }
          public List<string> Lo { get; set; }
