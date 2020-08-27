@@ -17,16 +17,16 @@ namespace sc_presure {
    class Program {
       static void Main (string[] args) {
 
-       string res=Newtonsoft.Json. JsonConvert.SerializeObject( Srv_Factory ());
-         var client = new RestClient("http://app.chinasupercloud.com:8088/support/api/ipmi");
-client.Timeout = -1;
-var request = new RestRequest(Method.POST);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", res,  ParameterType.RequestBody);
-IRestResponse response = client.Execute(request);
-Console.WriteLine(response.Content);
-        
+         string res = Newtonsoft.Json.JsonConvert.SerializeObject (Srv_Factory ());
+         var client = new RestClient ("http://app.chinasupercloud.com:8088/support/api/ipmi");
+         client.Timeout = -1;
+         var request = new RestRequest (Method.POST);
+         request.AddHeader ("Content-Type", "application/json");
+         request.AddParameter ("application/json", res, ParameterType.RequestBody);
+         IRestResponse response = client.Execute (request);
+         Console.WriteLine (response.Content);
 
+         UID_ON ();
       }
       static G_RAW_info Te () {
          G_RAW_info GGG = new G_RAW_info ();
@@ -290,6 +290,12 @@ Console.WriteLine(response.Content);
          }
          return result;
       }
+      public static void UID_ON () {
+         common_cmd (" raw 0x30 0x0d", "/bin/ipmitool");
+      }
+      public static void UID_OFF () {
+         common_cmd (" raw 0x30 0x0e", "/bin/ipmitool");
+      }
 
       public static ServerInfo Srv_Factory () {
          G_RAW_info info = Te ();
@@ -303,14 +309,14 @@ Console.WriteLine(response.Content);
          srv.Sysinfo = Build_Sysinfo (info.Sysinfo);
          srv.Base_Board = Build_BaseBoard (info.BaseBoard);
 
-//            Console.WriteLine ("==============================");
+         //            Console.WriteLine ("==============================");
 
-// foreach (var item in srv.Base_Board)
-// {
-//     Console.WriteLine(item);
-// }
+         // foreach (var item in srv.Base_Board)
+         // {
+         //     Console.WriteLine(item);
+         // }
 
-//              Console.WriteLine ("==============================");
+         //              Console.WriteLine ("==============================");
 
          srv.others = info.Others;
          srv.EthNET = info.Ethernets;
@@ -338,14 +344,13 @@ Console.WriteLine(response.Content);
          // foreach (var item in slot) {
 
          string j = Newtonsoft.Json.JsonConvert.SerializeObject (srv);
-                    Console.WriteLine ("==============================");
+         Console.WriteLine ("==============================");
 
-//foreach (var item in srv.Base_Board)
-//{
-    Console.WriteLine(j);
+         //foreach (var item in srv.Base_Board)
+         //{
+         Console.WriteLine (j);
 
-
-             Console.WriteLine ("==============================");
+         Console.WriteLine ("==============================");
          var sinfo = Newtonsoft.Json.JsonConvert.DeserializeObject<sc_server.ServerInfo> (j);
          Console.WriteLine (sinfo.ToJson ());
 
