@@ -30,6 +30,7 @@ namespace sc_presure {
       }
       static G_RAW_info Te () {
          G_RAW_info GGG = new G_RAW_info ();
+         
          //    Console.WriteLine ("Hello World!");
          //IPMI_Access.Foreloop();
          //  Console.WriteLine (LSEX ());
