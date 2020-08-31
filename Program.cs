@@ -63,6 +63,7 @@ namespace sc_presure {
          var res14 = Des_tor.RAWRecord (common_cmd (" -c ifconfig  ", "/bin/bash"));
          var res15 = Des_tor.RAWRecord (common_cmd ("  -i 0 -q  ", "/bin/nvidia-smi"));
          var res16 = Des_tor.RAWRecord(common_cmd(" -a /dev/sda  ","/sbin/smartctl"));
+          var res17 = Des_tor.RAWRecord(common_cmd(" smart-log /dev/nvme0  ","/sbin/nvme"));
 
          var slist1 = res1.Where (z => z[0] == "MAC Address" || z[0] == "IP Adress").ToList ();
          var slist2 = res2.Where (z => z[0] == "Firmware Revision" ||
@@ -274,6 +275,12 @@ namespace sc_presure {
             Console.WriteLine (re);
             GGG.Disk_SDA.Add (re);
          }
+            Console.WriteLine ("---------NVME-----");
+   var llist15 = res17;
+         foreach (var re in llist15) {
+            Console.WriteLine (re);
+            GGG.NVME.Add (re);
+         }
 
          Console.WriteLine ("--Others--------------");
 
@@ -353,6 +360,7 @@ namespace sc_presure {
          srv.Base_Board = Build_BaseBoard (info.BaseBoard);
          srv.GPU = info.GPU;
          srv.DISK_SDA=info.Disk_SDA;
+         srv.NVME=info.NVME;
 
          //            Console.WriteLine ("==============================");
 
@@ -543,11 +551,13 @@ namespace sc_presure {
          this.Lo = new List<string> ();
          this.IP = new List<string> ();
          this.GPU = new List<string> ();
+         this.NVME=new List<string>();
          this.Others = new List<string> ();
 this.Disk_SDA=new List<string>();
 
       }
       public List<string> Disk_SDA{set;get;}
+      public List<string>NVME{set;get;}
       public List<string> GPU { get; set; }
       public List<string> BIOS { get; set; }
       public List<string> Sysinfo { get; set; }
@@ -706,6 +716,7 @@ this.Disk_SDA=new List<string>();
       public List<string> LO { set; get; }
       public List<string> GPU { set; get; }
       public List<string> DISK_SDA{set;get;}
+      public List<string> NVME{set; get;}
       public List<string> IP { set; get; }
    }
    //  public enum BankLocator { P1Node1Channel3Dimm1 };
@@ -784,6 +795,7 @@ this.Disk_SDA=new List<string>();
          public List<string> Ip { get; set; }
          public List<string> GPU { get; set; }
          public List<string> DISK_SDA{set;get;}
+         public List<string> NVME{set;get;}
       }
 
       public partial class Cpu {
