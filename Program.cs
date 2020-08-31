@@ -60,6 +60,7 @@ namespace sc_presure {
          var res12 = Des_tor.RAWRecord (common_cmd ("   ", "/usr/sbin/dmidecode"));
          var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/usr/bin/lspci"));
          var res14 = Des_tor.RAWRecord (common_cmd (" -c ifconfig  ", "/bin/bash"));
+         var res15=Des_tor.RAWRecord(  common_cmd("  -i 0 -q  ","/usr/bin/nvidia-smi"));
 
          var slist1 = res1.Where (z => z[0] == "MAC Address" || z[0] == "IP Adress").ToList ();
          var slist2 = res2.Where (z => z[0] == "Firmware Revision" ||
@@ -258,6 +259,13 @@ namespace sc_presure {
             GGG.IP.Add (res[1]);
 
          }
+         Console.WriteLine("---------GPU------");
+         var llist13=res15;
+         foreach (var re in llist13)
+         {
+              Console.WriteLine (re);
+            GGG.GPU.Add (re);
+         }
 
          Console.WriteLine ("--Others--------------");
 
@@ -309,6 +317,8 @@ namespace sc_presure {
          srv.BIOS = Build_Bios (info.BIOS);
          srv.Sysinfo = Build_Sysinfo (info.Sysinfo);
          srv.Base_Board = Build_BaseBoard (info.BaseBoard);
+         srv.GPU=info.GPU;
+         
 
          //            Console.WriteLine ("==============================");
 
@@ -498,9 +508,11 @@ namespace sc_presure {
          this.Ethernets = new List<string> ();
          this.Lo = new List<string> ();
          this.IP = new List<string> ();
+         this.GPU=new List<string>();
          this.Others = new List<string> ();
 
       }
+      public List<string> GPU{get;set;}
       public List<string> BIOS { get; set; }
       public List<string> Sysinfo { get; set; }
       public List<string> BaseBoard { get; set; }
@@ -656,6 +668,7 @@ namespace sc_presure {
       public List<string> others { set; get; }
       public List<string> EthNET { set; get; }
       public List<string> LO { set; get; }
+      public List<string> GPU{set;get;}
       public List<string> IP { set; get; }
    }
    //  public enum BankLocator { P1Node1Channel3Dimm1 };
@@ -732,6 +745,7 @@ namespace sc_presure {
          public List<string> EthNet { get; set; }
          public List<string> Lo { get; set; }
          public List<string> Ip { get; set; }
+         public List<string> GPU{get;set;}
       }
 
       public partial class Cpu {
