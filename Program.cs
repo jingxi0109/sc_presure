@@ -26,7 +26,7 @@ namespace sc_presure {
          IRestResponse response = client.Execute (request);
          Console.WriteLine (response.Content);
 
-         UID_ON ();
+       //  UID_ON ();
       }
       static G_RAW_info Te () {
          G_RAW_info GGG = new G_RAW_info ();
@@ -43,22 +43,22 @@ namespace sc_presure {
          //  Thread.Sleep (300);
          Console.WriteLine ("----------------");
          // Console.WriteLine (common_cmd ("-c  lan print 1", "/bin/ipmitool"));
-         var res1 = Des_tor.RowRecord (common_cmd ("-c  lan print 1", "/bin/ipmitool"));
-         var res2 = Des_tor.RowRecord (common_cmd ("-c  mc info", "/bin/ipmitool"));
-         var res3 = Des_tor.RowRecord (common_cmd ("-c  fru", "/bin/ipmitool"));
-         var res4 = Des_tor.RowRecord (common_cmd ("-c  dcmi power reading ", "/bin/ipmitool"));
+         var res1 = Des_tor.RowRecord (common_cmd ("-c  lan print 1", "/usr/bin/ipmitool"));
+         var res2 = Des_tor.RowRecord (common_cmd ("-c  mc info", "/usr/bin/ipmitool"));
+         var res3 = Des_tor.RowRecord (common_cmd ("-c  fru", "/usr/bin/ipmitool"));
+         var res4 = Des_tor.RowRecord (common_cmd ("-c  dcmi power reading ", "/usr/bin/ipmitool"));
 
          //3 elments in this list.
-         var res5 = Des_tor.SDRRecord (common_cmd ("-c  sdr ", "/bin/ipmitool"));
-         var res6 = Des_tor.RAWRecord (common_cmd ("  -t BIOS ", "/sbin/dmidecode"));
-         var res7 = Des_tor.RAWRecord (common_cmd ("  -t system ", "/sbin/dmidecode"));
-         var res8 = Des_tor.RAWRecord (common_cmd ("  -t baseboard ", "/sbin/dmidecode"));
-         var res9 = Des_tor.RAWRecord (common_cmd ("  -t processor ", "/sbin/dmidecode"));
+         var res5 = Des_tor.SDRRecord (common_cmd ("-c  sdr ", "/usr/bin/ipmitool"));
+         var res6 = Des_tor.RAWRecord (common_cmd ("  -t BIOS ", "/usr/sbin/dmidecode"));
+         var res7 = Des_tor.RAWRecord (common_cmd ("  -t system ", "/usr/sbin/dmidecode"));
+         var res8 = Des_tor.RAWRecord (common_cmd ("  -t baseboard ", "/usr/sbin/dmidecode"));
+         var res9 = Des_tor.RAWRecord (common_cmd ("  -t processor ", "/usr/sbin/dmidecode"));
 
-         var res10 = Des_tor.RAWRecord (common_cmd ("  -t memory ", "/sbin/dmidecode"));
-         var res11 = Des_tor.RAWRecord (common_cmd ("  -t slot ", "/sbin/dmidecode"));
-         var res12 = Des_tor.RAWRecord (common_cmd ("   ", "/sbin/dmidecode"));
-         var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/bin/lspci"));
+         var res10 = Des_tor.RAWRecord (common_cmd ("  -t memory ", "/usr/sbin/dmidecode"));
+         var res11 = Des_tor.RAWRecord (common_cmd ("  -t slot ", "/usr/sbin/dmidecode"));
+         var res12 = Des_tor.RAWRecord (common_cmd ("   ", "/usr/sbin/dmidecode"));
+         var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/usr/bin/lspci"));
          var res14 = Des_tor.RAWRecord (common_cmd (" -c ifconfig  ", "/bin/bash"));
 
          var slist1 = res1.Where (z => z[0] == "MAC Address" || z[0] == "IP Adress").ToList ();
@@ -89,19 +89,19 @@ namespace sc_presure {
 
          ).ToList ();
          //var Total_list=new List<string>();
-         var llist1 = res6.Take (8).TakeLast (4);
+         var llist1 = res6;//.Take (8).TakeLast (4);
          foreach (var re in llist1) {
             Console.WriteLine (re);
             GGG.BIOS.Add (re);
          }
          Console.WriteLine ("--System--------------");
-         var llist2 = res7.Take (9).TakeLast (5);
+         var llist2 = res7;//.Take (9).TakeLast (5);
          foreach (var re in llist2) {
             Console.WriteLine (re);
             GGG.Sysinfo.Add (re);
          }
          Console.WriteLine ("--BaseBoard--------------");
-         var llist3 = res8.Take (9).TakeLast (5);
+         var llist3 = res8;//.Take (9).TakeLast (5);
          foreach (var re in llist3) {
             Console.WriteLine (re);
             GGG.BaseBoard.Add (re);
@@ -527,21 +527,21 @@ namespace sc_presure {
                if (s.Length > 3) {
                   this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim () + ":" + s[2].Trim () + ":" + s[3].Trim ());
                } else {
-                  if (s[0].Contains ("Characteristics")) {
-                     this.info.Add (s[0].Trim ().Replace (" ", ""), "");
-                  } else {
+                //  if (s[0].Contains ("Characteristics")) {
+             //        this.info.Add (s[0].Trim ().Replace (" ", ""), "");
+              //    } else {
                      this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ());
-                  }
+                //  }
                }
 
             } catch (System.Exception) {
 
-               if (this.info["Characteristics"] == "") {
-                  this.info["Characteristics"] += s[0].Trim () + " / ";
-               } else {
-                  this.info["Characteristics"] += s[0].Trim ();
+               // if (this.info["Characteristics"] == "") {
+               //    this.info["Characteristics"] += s[0].Trim () + " / ";
+               // } else {
+               //    this.info["Characteristics"] += s[0].Trim ();
 
-               }
+               // }
 
             }
 
