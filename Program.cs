@@ -50,7 +50,7 @@ namespace sc_presure {
          var res4 = Des_tor.RowRecord (common_cmd ("-c  dcmi power reading ", "/bin/ipmitool"));
 
          //3 elments in this list.
-         var res5 = Des_tor.SDRRecord (common_cmd ("-c  sdr ", "/bin/ipmitool"));
+         var res5 = Des_tor.RAWRecord (common_cmd ("-c  sdr ", "/bin/ipmitool"));
          var res6 = Des_tor.RAWRecord (common_cmd ("  -t BIOS ", "/sbin/dmidecode"));
          var res7 = Des_tor.RAWRecord (common_cmd ("  -t system ", "/sbin/dmidecode"));
          var res8 = Des_tor.RAWRecord (common_cmd ("  -t baseboard ", "/sbin/dmidecode"));
@@ -64,9 +64,9 @@ namespace sc_presure {
          var res15 = Des_tor.RAWRecord (common_cmd ("  -i 0 -q  ", "/bin/nvidia-smi"));
          var res16 = Des_tor.RAWRecord (common_cmd (" -a /dev/sda  ", "/sbin/smartctl"));
          var res17 = Des_tor.RAWRecord (common_cmd (" smart-log /dev/nvme0  ", "/sbin/nvme"));
-         var res18 = Des_tor.RAWRecord(common_cmd(" /c0 show ","/local/sbin/storcli"));
-var res19 = Des_tor.RAWRecord(common_cmd(" /c0/eall/sall show ","/local/sbin/storcli"));
-var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/storcli"));
+         var res18 = Des_tor.RAWRecord (common_cmd (" /c0 show ", "/local/sbin/storcli"));
+         var res19 = Des_tor.RAWRecord (common_cmd (" /c0/eall/sall show ", "/local/sbin/storcli"));
+         var res20 = Des_tor.RAWRecord (common_cmd (" /c0/e252/s10 show all ", "/local/sbin/storcli"));
 
          var slist1 = res1.Where (z => z[0] == "MAC Address" || z[0] == "IP Adress").ToList ();
          var slist2 = res2.Where (z => z[0] == "Firmware Revision" ||
@@ -95,6 +95,7 @@ var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/
             z[0] == "Average power reading over sample period"
 
          ).ToList ();
+
          //var Total_list=new List<string>();
          var llist1 = res6; //.Take (8).TakeLast (4);
          foreach (var re in llist1) {
@@ -228,7 +229,6 @@ var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/
             GGG.LSI.Add (re);
          }
 
-
          Console.WriteLine ("---------LO-------");
          var llist11 = res14.Where (z =>
             !z.StartsWith (" ") && !z.Contains ("lo") //||
@@ -288,33 +288,37 @@ var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/
             Console.WriteLine (re);
             GGG.NVME.Add (re);
          }
-         
-         
-          Console.WriteLine ("---/c0 show----Disks-----");
-         var llist16 = res18;//.Where (z =>
+
+         Console.WriteLine ("---/c0 show----Disks-----");
+         var llist16 = res18; //.Where (z =>
 
          foreach (var re in llist16) {
             Console.WriteLine (re);
             GGG.Rcard.Add (re);
          }
 
-                  Console.WriteLine ("---/c0/eall/sall show----Disks-----");
-         var llist17 = res19;//.Where (z =>
+         Console.WriteLine ("---/c0/eall/sall show----Disks-----");
+         var llist17 = res19; //.Where (z =>
 
          foreach (var re in llist16) {
             Console.WriteLine (re);
             GGG.Rstatus.Add (re);
          }
 
-                         Console.WriteLine ("---/c0/e252/s10 show all----Disks-----");
-         var llist18 = res20;//.Where (z =>
+         Console.WriteLine ("---/c0/e252/s10 show all----Disks-----");
+         var llist18 = res20; //.Where (z =>
 
          foreach (var re in llist18) {
             Console.WriteLine (re);
             GGG.Rdisk.Add (re);
          }
+         Console.WriteLine ("---Sensor Data-----");
+         var llist19 = res5; //.Where (z =>
 
-
+         foreach (var re in llist19) {
+            Console.WriteLine (re);
+            GGG.SDR.Add (re);
+         }
 
          Console.WriteLine ("--Others--------------");
 
@@ -325,6 +329,7 @@ var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/
             Console.WriteLine (item[0] + ":" + item[1]);
             GGG.Others.Add (item[0] + ":" + item[1]);
          }
+
          return GGG;
       }
 
@@ -397,9 +402,10 @@ var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/
          srv.NVME = info.NVME;
          srv.LSI = info.LSI;
          srv.MELL = info.MELL;
-         srv.Rstatus=info.Rstatus;
-         srv.Rdisk=info.Rdisk;
-         srv.Rcard=info.Rcard;
+         srv.Rstatus = info.Rstatus;
+         srv.Rdisk = info.Rdisk;
+         srv.Rcard = info.Rcard;
+         srv.SDR=info.SDR;
 
          //            Console.WriteLine ("==============================");
 
@@ -595,14 +601,16 @@ var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/
          this.NVME = new List<string> ();
          this.Others = new List<string> ();
          this.Disk_SDA = new List<string> ();
-         this.Rcard=new List<string>();
-         this.Rdisk=new List<string>();
-         this.Rstatus=new List<string>();
+         this.Rcard = new List<string> ();
+         this.Rdisk = new List<string> ();
+         this.Rstatus = new List<string> ();
+         this.SDR = new List<string> ();
 
       }
-      public List<string> Rcard{set;get;}
-      public List<string> Rstatus{set;get;}
-      public List<string> Rdisk{set;get;}
+      public List<string> SDR { set; get; }
+      public List<string> Rcard { set; get; }
+      public List<string> Rstatus { set; get; }
+      public List<string> Rdisk { set; get; }
       public List<string> Disk_SDA { set; get; }
       public List<string> MELL { set; get; }
       public List<string> LSI { set; get; }
@@ -769,9 +777,10 @@ var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/
       public List<string> LSI { set; get; }
       public List<string> NVME { set; get; }
       public List<string> IP { set; get; }
-            public List<string> Rcard{set;get;}
-      public List<string> Rstatus{set;get;}
-      public List<string> Rdisk{set;get;}
+      public List<string> SDR { set; get; }
+      public List<string> Rcard { set; get; }
+      public List<string> Rstatus { set; get; }
+      public List<string> Rdisk { set; get; }
    }
    //  public enum BankLocator { P1Node1Channel3Dimm1 };
 
@@ -852,9 +861,10 @@ var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/
          public List<string> DISK_SDA { set; get; }
          public List<string> NVME { set; get; }
          public List<string> LSI { set; get; }
-               public List<string> Rcard{set;get;}
-      public List<string> Rstatus{set;get;}
-      public List<string> Rdisk{set;get;}
+         public List<string> SDR { set; get; }
+         public List<string> Rcard { set; get; }
+         public List<string> Rstatus { set; get; }
+         public List<string> Rdisk { set; get; }
       }
 
       public partial class Cpu {
