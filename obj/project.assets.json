@@ -6262,11 +6262,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/root/Code/sc_presure/sc_presure.csproj",
+      "projectUniqueName": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
       "projectName": "sc_presure",
-      "projectPath": "/root/Code/sc_presure/sc_presure.csproj",
+      "projectPath": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
       "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/root/Code/sc_presure/obj/",
+      "outputPath": "/home/jingxi/Code/sc_presure/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/root/.nuget/NuGet/NuGet.Config"
@@ -6319,7 +6319,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/96/sdk/3.1.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.401/RuntimeIdentifierGraph.json"
       }
     }
   }

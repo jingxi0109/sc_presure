@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OcB8aYEUERoTVqIagHpDRLvbRA76hwgG/FqbP85e2kc5Wzr2GV2c3xyrQG9DGdTy8FDI79+mOUkYRj8EhpXcqQ==",
+  "dgSpecHash": "SyxX1XpY3YA5gP6MFfSKkTcs/oW58ZWzg34CM/jsbz0KDz5sv66q59Hx071ID0h5m76pt+4MpxVXGthByZ88Fg==",
   "success": true,
-  "projectFilePath": "/root/Code/sc_presure/sc_presure.csproj",
+  "projectFilePath": "/home/jingxi/Code/sc_presure/sc_presure.csproj",
   "expectedPackageFiles": [
     "/root/.nuget/packages/dnsclient/1.2.0/dnsclient.1.2.0.nupkg.sha512",
     "/root/.nuget/packages/microsoft.netcore.platforms/2.1.2/microsoft.netcore.platforms.2.1.2.nupkg.sha512",

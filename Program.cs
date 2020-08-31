@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Cache;
 using System.Security.AccessControl;
@@ -26,11 +27,11 @@ namespace sc_presure {
          IRestResponse response = client.Execute (request);
          Console.WriteLine (response.Content);
 
-       //  UID_ON ();
+         //  UID_ON ();
       }
       static G_RAW_info Te () {
          G_RAW_info GGG = new G_RAW_info ();
-         
+
          //    Console.WriteLine ("Hello World!");
          //IPMI_Access.Foreloop();
          //  Console.WriteLine (LSEX ());
@@ -43,24 +44,25 @@ namespace sc_presure {
          //  Thread.Sleep (300);
          Console.WriteLine ("----------------");
          // Console.WriteLine (common_cmd ("-c  lan print 1", "/bin/ipmitool"));
-         var res1 = Des_tor.RowRecord (common_cmd ("-c  lan print 1", "/usr/bin/ipmitool"));
-         var res2 = Des_tor.RowRecord (common_cmd ("-c  mc info", "/usr/bin/ipmitool"));
-         var res3 = Des_tor.RowRecord (common_cmd ("-c  fru", "/usr/bin/ipmitool"));
-         var res4 = Des_tor.RowRecord (common_cmd ("-c  dcmi power reading ", "/usr/bin/ipmitool"));
+         var res1 = Des_tor.RowRecord (common_cmd ("-c  lan print 1", "/bin/ipmitool"));
+         var res2 = Des_tor.RowRecord (common_cmd ("-c  mc info", "/bin/ipmitool"));
+         var res3 = Des_tor.RowRecord (common_cmd ("-c  fru", "/bin/ipmitool"));
+         var res4 = Des_tor.RowRecord (common_cmd ("-c  dcmi power reading ", "/bin/ipmitool"));
 
          //3 elments in this list.
-         var res5 = Des_tor.SDRRecord (common_cmd ("-c  sdr ", "/usr/bin/ipmitool"));
-         var res6 = Des_tor.RAWRecord (common_cmd ("  -t BIOS ", "/usr/sbin/dmidecode"));
-         var res7 = Des_tor.RAWRecord (common_cmd ("  -t system ", "/usr/sbin/dmidecode"));
-         var res8 = Des_tor.RAWRecord (common_cmd ("  -t baseboard ", "/usr/sbin/dmidecode"));
-         var res9 = Des_tor.RAWRecord (common_cmd ("  -t processor ", "/usr/sbin/dmidecode"));
+         var res5 = Des_tor.SDRRecord (common_cmd ("-c  sdr ", "/bin/ipmitool"));
+         var res6 = Des_tor.RAWRecord (common_cmd ("  -t BIOS ", "/sbin/dmidecode"));
+         var res7 = Des_tor.RAWRecord (common_cmd ("  -t system ", "/sbin/dmidecode"));
+         var res8 = Des_tor.RAWRecord (common_cmd ("  -t baseboard ", "/sbin/dmidecode"));
+         var res9 = Des_tor.RAWRecord (common_cmd ("  -t processor ", "/sbin/dmidecode"));
 
-         var res10 = Des_tor.RAWRecord (common_cmd ("  -t memory ", "/usr/sbin/dmidecode"));
-         var res11 = Des_tor.RAWRecord (common_cmd ("  -t slot ", "/usr/sbin/dmidecode"));
-         var res12 = Des_tor.RAWRecord (common_cmd ("   ", "/usr/sbin/dmidecode"));
-         var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/usr/bin/lspci"));
+         var res10 = Des_tor.RAWRecord (common_cmd ("  -t memory ", "/sbin/dmidecode"));
+         var res11 = Des_tor.RAWRecord (common_cmd ("  -t slot ", "/sbin/dmidecode"));
+         var res12 = Des_tor.RAWRecord (common_cmd ("   ", "/sbin/dmidecode"));
+         var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/bin/lspci"));
          var res14 = Des_tor.RAWRecord (common_cmd (" -c ifconfig  ", "/bin/bash"));
-         var res15=Des_tor.RAWRecord(  common_cmd("  -i 0 -q  ","/usr/bin/nvidia-smi"));
+         var res15 = Des_tor.RAWRecord (common_cmd ("  -i 0 -q  ", "/bin/nvidia-smi"));
+         var res16 = Des_tor.RAWRecord(common_cmd(" -a /dev/sda  ","/sbin/smartctl"));
 
          var slist1 = res1.Where (z => z[0] == "MAC Address" || z[0] == "IP Adress").ToList ();
          var slist2 = res2.Where (z => z[0] == "Firmware Revision" ||
@@ -90,19 +92,19 @@ namespace sc_presure {
 
          ).ToList ();
          //var Total_list=new List<string>();
-         var llist1 = res6;//.Take (8).TakeLast (4);
+         var llist1 = res6; //.Take (8).TakeLast (4);
          foreach (var re in llist1) {
             Console.WriteLine (re);
             GGG.BIOS.Add (re);
          }
          Console.WriteLine ("--System--------------");
-         var llist2 = res7;//.Take (9).TakeLast (5);
+         var llist2 = res7; //.Take (9).TakeLast (5);
          foreach (var re in llist2) {
             Console.WriteLine (re);
             GGG.Sysinfo.Add (re);
          }
          Console.WriteLine ("--BaseBoard--------------");
-         var llist3 = res8;//.Take (9).TakeLast (5);
+         var llist3 = res8; //.Take (9).TakeLast (5);
          foreach (var re in llist3) {
             Console.WriteLine (re);
             GGG.BaseBoard.Add (re);
@@ -259,12 +261,18 @@ namespace sc_presure {
             GGG.IP.Add (res[1]);
 
          }
-         Console.WriteLine("---------GPU------");
-         var llist13=res15;
-         foreach (var re in llist13)
-         {
-              Console.WriteLine (re);
+         Console.WriteLine ("---------GPU------");
+         var llist13 = res15;
+         foreach (var re in llist13) {
+            Console.WriteLine (re);
             GGG.GPU.Add (re);
+         }
+
+              Console.WriteLine ("---------Disk-SDA-----");
+         var llist14 = res16;
+         foreach (var re in llist14) {
+            Console.WriteLine (re);
+            GGG.Disk_SDA.Add (re);
          }
 
          Console.WriteLine ("--Others--------------");
@@ -284,19 +292,45 @@ namespace sc_presure {
          string command = cmd; //"write your command here";
          string filenamel = filename;
          string result = "";
-         using (System.Diagnostics.Process proc = new System.Diagnostics.Process ()) {
-            proc.StartInfo.FileName = filenamel; //"/bin/bash";
-            proc.StartInfo.Arguments = "  " + command; //"-c  " + command;// + @" -a | grep -i  'inet ' ";
-            proc.StartInfo.UseShellExecute = false;
-            proc.StartInfo.RedirectStandardOutput = true;
-            proc.StartInfo.RedirectStandardError = true;
-            proc.Start ();
+         if (File.Exists (filenamel)) {
 
-            result += proc.StandardOutput.ReadToEnd ();
-            result += proc.StandardError.ReadToEnd ();
+            using (System.Diagnostics.Process proc = new System.Diagnostics.Process ()) {
+               proc.StartInfo.FileName = filenamel; //"/bin/bash";
+               proc.StartInfo.Arguments = "  " + command; //"-c  " + command;// + @" -a | grep -i  'inet ' ";
+               proc.StartInfo.UseShellExecute = false;
+               proc.StartInfo.RedirectStandardOutput = true;
+               proc.StartInfo.RedirectStandardError = true;
+               proc.Start ();
 
-            proc.WaitForExit ();
+               result += proc.StandardOutput.ReadToEnd ();
+               result += proc.StandardError.ReadToEnd ();
+
+               proc.WaitForExit ();
+            }
+         } else {
+            filenamel = "/usr" + filename;
+            if (File.Exists (filenamel)) {
+
+               using (System.Diagnostics.Process proc = new System.Diagnostics.Process ()) {
+                  proc.StartInfo.FileName = filenamel; //"/bin/bash";
+                  proc.StartInfo.Arguments = "  " + command; //"-c  " + command;// + @" -a | grep -i  'inet ' ";
+                  proc.StartInfo.UseShellExecute = false;
+                  proc.StartInfo.RedirectStandardOutput = true;
+                  proc.StartInfo.RedirectStandardError = true;
+                  proc.Start ();
+
+                  result += proc.StandardOutput.ReadToEnd ();
+                  result += proc.StandardError.ReadToEnd ();
+
+                  proc.WaitForExit ();
+               }
+
+            } else {
+               throw new Exception (filenamel);
+            }
+
          }
+
          return result;
       }
       public static void UID_ON () {
@@ -317,8 +351,8 @@ namespace sc_presure {
          srv.BIOS = Build_Bios (info.BIOS);
          srv.Sysinfo = Build_Sysinfo (info.Sysinfo);
          srv.Base_Board = Build_BaseBoard (info.BaseBoard);
-         srv.GPU=info.GPU;
-         
+         srv.GPU = info.GPU;
+         srv.DISK_SDA=info.Disk_SDA;
 
          //            Console.WriteLine ("==============================");
 
@@ -508,11 +542,13 @@ namespace sc_presure {
          this.Ethernets = new List<string> ();
          this.Lo = new List<string> ();
          this.IP = new List<string> ();
-         this.GPU=new List<string>();
+         this.GPU = new List<string> ();
          this.Others = new List<string> ();
+this.Disk_SDA=new List<string>();
 
       }
-      public List<string> GPU{get;set;}
+      public List<string> Disk_SDA{set;get;}
+      public List<string> GPU { get; set; }
       public List<string> BIOS { get; set; }
       public List<string> Sysinfo { get; set; }
       public List<string> BaseBoard { get; set; }
@@ -539,11 +575,11 @@ namespace sc_presure {
                if (s.Length > 3) {
                   this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim () + ":" + s[2].Trim () + ":" + s[3].Trim ());
                } else {
-                //  if (s[0].Contains ("Characteristics")) {
-             //        this.info.Add (s[0].Trim ().Replace (" ", ""), "");
-              //    } else {
-                     this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ());
-                //  }
+                  //  if (s[0].Contains ("Characteristics")) {
+                  //        this.info.Add (s[0].Trim ().Replace (" ", ""), "");
+                  //    } else {
+                  this.info.Add (s[0].Trim ().Replace (" ", ""), s[1].Trim ());
+                  //  }
                }
 
             } catch (System.Exception) {
@@ -668,7 +704,8 @@ namespace sc_presure {
       public List<string> others { set; get; }
       public List<string> EthNET { set; get; }
       public List<string> LO { set; get; }
-      public List<string> GPU{set;get;}
+      public List<string> GPU { set; get; }
+      public List<string> DISK_SDA{set;get;}
       public List<string> IP { set; get; }
    }
    //  public enum BankLocator { P1Node1Channel3Dimm1 };
@@ -745,7 +782,8 @@ namespace sc_presure {
          public List<string> EthNet { get; set; }
          public List<string> Lo { get; set; }
          public List<string> Ip { get; set; }
-         public List<string> GPU{get;set;}
+         public List<string> GPU { get; set; }
+         public List<string> DISK_SDA{set;get;}
       }
 
       public partial class Cpu {
