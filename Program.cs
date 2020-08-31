@@ -62,8 +62,11 @@ namespace sc_presure {
          var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/bin/lspci"));
          var res14 = Des_tor.RAWRecord (common_cmd (" -c ifconfig  ", "/bin/bash"));
          var res15 = Des_tor.RAWRecord (common_cmd ("  -i 0 -q  ", "/bin/nvidia-smi"));
-         var res16 = Des_tor.RAWRecord(common_cmd(" -a /dev/sda  ","/sbin/smartctl"));
-          var res17 = Des_tor.RAWRecord(common_cmd(" smart-log /dev/nvme0  ","/sbin/nvme"));
+         var res16 = Des_tor.RAWRecord (common_cmd (" -a /dev/sda  ", "/sbin/smartctl"));
+         var res17 = Des_tor.RAWRecord (common_cmd (" smart-log /dev/nvme0  ", "/sbin/nvme"));
+         var res18 = Des_tor.RAWRecord(common_cmd(" /c0 show ","/local/sbin/storcli"));
+var res19 = Des_tor.RAWRecord(common_cmd(" /c0/eall/sall show ","/local/sbin/storcli"));
+var res20 = Des_tor.RAWRecord(common_cmd(" /c0/e252/s10 show all ","/local/sbin/storcli"));
 
          var slist1 = res1.Where (z => z[0] == "MAC Address" || z[0] == "IP Adress").ToList ();
          var slist2 = res2.Where (z => z[0] == "Firmware Revision" ||
@@ -205,6 +208,7 @@ namespace sc_presure {
          );
          foreach (var re in llist9) {
             Console.WriteLine (re);
+            GGG.MELL.Add (re);
          }
          Console.WriteLine ("-----------LSI-----");
          var llist10 = res13.Where (z =>
@@ -219,9 +223,12 @@ namespace sc_presure {
             // z.Contains("PME signal is")||
             // z.Contains ("Bus Address:")
          );
-         foreach (var re in llist9) {
+         foreach (var re in llist10) {
             Console.WriteLine (re);
+            GGG.LSI.Add (re);
          }
+
+
          Console.WriteLine ("---------LO-------");
          var llist11 = res14.Where (z =>
             !z.StartsWith (" ") && !z.Contains ("lo") //||
@@ -269,18 +276,45 @@ namespace sc_presure {
             GGG.GPU.Add (re);
          }
 
-              Console.WriteLine ("---------Disk-SDA-----");
+         Console.WriteLine ("---------Disk-SDA-----");
          var llist14 = res16;
          foreach (var re in llist14) {
             Console.WriteLine (re);
             GGG.Disk_SDA.Add (re);
          }
-            Console.WriteLine ("---------NVME-----");
-   var llist15 = res17;
+         Console.WriteLine ("---------NVME-----");
+         var llist15 = res17;
          foreach (var re in llist15) {
             Console.WriteLine (re);
             GGG.NVME.Add (re);
          }
+         
+         
+          Console.WriteLine ("---/c0 show----Disks-----");
+         var llist16 = res18;//.Where (z =>
+
+         foreach (var re in llist16) {
+            Console.WriteLine (re);
+            GGG.Rcard.Add (re);
+         }
+
+                  Console.WriteLine ("---/c0/eall/sall show----Disks-----");
+         var llist17 = res19;//.Where (z =>
+
+         foreach (var re in llist16) {
+            Console.WriteLine (re);
+            GGG.Rstatus.Add (re);
+         }
+
+                         Console.WriteLine ("---/c0/e252/s10 show all----Disks-----");
+         var llist18 = res20;//.Where (z =>
+
+         foreach (var re in llist18) {
+            Console.WriteLine (re);
+            GGG.Rdisk.Add (re);
+         }
+
+
 
          Console.WriteLine ("--Others--------------");
 
@@ -359,8 +393,13 @@ namespace sc_presure {
          srv.Sysinfo = Build_Sysinfo (info.Sysinfo);
          srv.Base_Board = Build_BaseBoard (info.BaseBoard);
          srv.GPU = info.GPU;
-         srv.DISK_SDA=info.Disk_SDA;
-         srv.NVME=info.NVME;
+         srv.DISK_SDA = info.Disk_SDA;
+         srv.NVME = info.NVME;
+         srv.LSI = info.LSI;
+         srv.MELL = info.MELL;
+         srv.Rstatus=info.Rstatus;
+         srv.Rdisk=info.Rdisk;
+         srv.Rcard=info.Rcard;
 
          //            Console.WriteLine ("==============================");
 
@@ -551,13 +590,23 @@ namespace sc_presure {
          this.Lo = new List<string> ();
          this.IP = new List<string> ();
          this.GPU = new List<string> ();
-         this.NVME=new List<string>();
+         this.LSI = new List<string> ();
+         this.MELL = new List<string> ();
+         this.NVME = new List<string> ();
          this.Others = new List<string> ();
-this.Disk_SDA=new List<string>();
+         this.Disk_SDA = new List<string> ();
+         this.Rcard=new List<string>();
+         this.Rdisk=new List<string>();
+         this.Rstatus=new List<string>();
 
       }
-      public List<string> Disk_SDA{set;get;}
-      public List<string>NVME{set;get;}
+      public List<string> Rcard{set;get;}
+      public List<string> Rstatus{set;get;}
+      public List<string> Rdisk{set;get;}
+      public List<string> Disk_SDA { set; get; }
+      public List<string> MELL { set; get; }
+      public List<string> LSI { set; get; }
+      public List<string> NVME { set; get; }
       public List<string> GPU { get; set; }
       public List<string> BIOS { get; set; }
       public List<string> Sysinfo { get; set; }
@@ -710,14 +759,19 @@ this.Disk_SDA=new List<string>();
       public List<slot.Slot> PCiSLOT { get; set; }
       public List<string> BIOS { set; get; }
       public List<string> Sysinfo { set; get; }
+      public List<string> MELL { set; get; }
       public List<string> Base_Board { set; get; }
       public List<string> others { set; get; }
       public List<string> EthNET { set; get; }
       public List<string> LO { set; get; }
       public List<string> GPU { set; get; }
-      public List<string> DISK_SDA{set;get;}
-      public List<string> NVME{set; get;}
+      public List<string> DISK_SDA { set; get; }
+      public List<string> LSI { set; get; }
+      public List<string> NVME { set; get; }
       public List<string> IP { set; get; }
+            public List<string> Rcard{set;get;}
+      public List<string> Rstatus{set;get;}
+      public List<string> Rdisk{set;get;}
    }
    //  public enum BankLocator { P1Node1Channel3Dimm1 };
 
@@ -793,9 +847,14 @@ this.Disk_SDA=new List<string>();
          public List<string> EthNet { get; set; }
          public List<string> Lo { get; set; }
          public List<string> Ip { get; set; }
+         public List<string> MELL { set; get; }
          public List<string> GPU { get; set; }
-         public List<string> DISK_SDA{set;get;}
-         public List<string> NVME{set;get;}
+         public List<string> DISK_SDA { set; get; }
+         public List<string> NVME { set; get; }
+         public List<string> LSI { set; get; }
+               public List<string> Rcard{set;get;}
+      public List<string> Rstatus{set;get;}
+      public List<string> Rdisk{set;get;}
       }
 
       public partial class Cpu {
