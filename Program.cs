@@ -51,6 +51,9 @@ namespace sc_presure {
 
          //3 elments in this list.
          var res5 = Des_tor.RAWRecord (common_cmd ("-c  sdr ", "/bin/ipmitool"));
+
+
+
          var res6 = Des_tor.RAWRecord (common_cmd ("  -t BIOS ", "/sbin/dmidecode"));
          var res7 = Des_tor.RAWRecord (common_cmd ("  -t system ", "/sbin/dmidecode"));
          var res8 = Des_tor.RAWRecord (common_cmd ("  -t baseboard ", "/sbin/dmidecode"));
@@ -59,11 +62,24 @@ namespace sc_presure {
          var res10 = Des_tor.RAWRecord (common_cmd ("  -t memory ", "/sbin/dmidecode"));
          var res11 = Des_tor.RAWRecord (common_cmd ("  -t slot ", "/sbin/dmidecode"));
          var res12 = Des_tor.RAWRecord (common_cmd ("   ", "/sbin/dmidecode"));
+
+
+
+
+
          var res13 = Des_tor.RAWRecord (common_cmd ("   ", "/bin/lspci"));
+
+
          var res14 = Des_tor.RAWRecord (common_cmd (" -c ifconfig  ", "/bin/bash"));
+
          var res15 = Des_tor.RAWRecord (common_cmd ("  -i 0 -q  ", "/bin/nvidia-smi"));
          var res16 = Des_tor.RAWRecord (common_cmd (" -a /dev/sda  ", "/sbin/smartctl"));
+
+
          var res17 = Des_tor.RAWRecord (common_cmd (" smart-log /dev/nvme0  ", "/sbin/nvme"));
+
+
+         
          var res18 = Des_tor.RAWRecord (common_cmd (" /c0 show ", "/local/sbin/storcli"));
          var res19 = Des_tor.RAWRecord (common_cmd (" /c0/eall/sall show ", "/local/sbin/storcli"));
          var res20 = Des_tor.RAWRecord (common_cmd (" /c0/e252/s10 show all ", "/local/sbin/storcli"));
